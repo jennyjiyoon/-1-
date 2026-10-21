@@ -1,0 +1,1228 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Der Die Das 연습장</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: 상단 고정 탭바 + 한 칼럼 학습 카드. 성별은 der=파랑 / die=빨강 / das=초록 으로 모든 화면에서 일관되게 표시 */
+:root{
+  --bg:#f3f5f8; --surface:#ffffff; --ink:#15191f; --muted:#5a6573; --line:#dbe0e7; --soft:#eaeef3;
+  --accent:#1d3557; --accent-ink:#ffffff;
+  --der:#2158c4; --der-bg:#e5edfb;
+  --die:#bf2a47; --die-bg:#fae6ea;
+  --das:#1f7d4d; --das-bg:#e2f3ea;
+  --ok:#1c7c4d; --ok-bg:#e2f3ea; --bad:#c0392b; --bad-bg:#fbe9e6; --warn:#9a6700; --warn-bg:#fff3d1;
+  --f-display:'Bricolage Grotesque','Noto Sans KR',system-ui,sans-serif;
+  --f-body:'Noto Sans KR',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1318; --surface:#171c23; --ink:#e8ecf1; --muted:#98a3b1; --line:#2a323c; --soft:#212831;
+  --accent:#9cc0f5; --accent-ink:#0f1318;
+  --der:#7ba9f4; --der-bg:#1a2a47; --die:#f08ca2; --die-bg:#3b1a25; --das:#72d3a0; --das-bg:#143225;
+  --ok:#72d3a0; --ok-bg:#143225; --bad:#f2877a; --bad-bg:#3b1d19; --warn:#f0c15a; --warn-bg:#3a2e10; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1318; --surface:#171c23; --ink:#e8ecf1; --muted:#98a3b1; --line:#2a323c; --soft:#212831;
+  --accent:#9cc0f5; --accent-ink:#0f1318;
+  --der:#7ba9f4; --der-bg:#1a2a47; --die:#f08ca2; --die-bg:#3b1a25; --das:#72d3a0; --das-bg:#143225;
+  --ok:#72d3a0; --ok-bg:#143225; --bad:#f2877a; --bad-bg:#3b1d19; --warn:#f0c15a; --warn-bg:#3a2e10; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+.wrap{max-width:780px;margin:0 auto}
+header.top{padding:18px 0 6px;display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{font-family:var(--f-display);font-weight:800;font-size:26px;letter-spacing:-.02em;margin:0}
+.brand .d1{color:var(--der)}.brand .d2{color:var(--die)}.brand .d3{color:var(--das)}
+.sub{color:var(--muted);font-size:13px}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);padding:8px 0;margin-bottom:14px;border-bottom:1px solid var(--line);
+  display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 14px;font:500 14px var(--f-body);cursor:pointer}
+nav.tabs button[aria-current="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+h2{font-family:var(--f-display);font-size:21px;letter-spacing:-.01em;margin:4px 0 4px}
+h3{font-family:var(--f-display);font-size:16px;margin:18px 0 8px}
+p{margin:6px 0}
+.muted{color:var(--muted)}.small{font-size:13px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0;min-width:0}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.spread{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+button,.btn{font:500 14px var(--f-body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer;min-height:38px}
+button:hover{border-color:var(--muted)}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.pri{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+button.ghost{background:transparent}
+button:disabled{opacity:.55;cursor:default}
+.chip{border-radius:999px;padding:5px 12px;font-size:13px;min-height:32px}
+.chip.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+input[type=text],textarea,select{width:100%;font:16px var(--f-body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 12px}
+textarea{min-height:130px;resize:vertical}
+input.blank{display:inline-block;width:auto;min-width:4ch;padding:1px 6px;font-size:15px;border-radius:6px;border:0;border-bottom:2px solid var(--muted);border-radius:0;background:var(--soft)}
+.bar{height:6px;background:var(--soft);border-radius:4px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--accent);transition:width .25s}
+.seg{max-width:100%;overflow-x:auto;scrollbar-width:none;display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--surface)}
+.seg button{white-space:nowrap;flex:0 0 auto;border:0;border-radius:0;background:transparent;min-height:36px}
+.seg button.on{background:var(--accent);color:var(--accent-ink)}
+/* gender */
+.der{color:var(--der)}.die{color:var(--die)}.das{color:var(--das)}
+.g-der{background:var(--der-bg);color:var(--der)}.g-die{background:var(--die-bg);color:var(--die)}.g-das{background:var(--das-bg);color:var(--das)}
+.noun{font-family:var(--f-display);font-weight:700}
+.tag{display:inline-block;border-radius:6px;padding:0 7px;font:700 13px var(--f-display);margin-right:5px}
+.word{font-family:var(--f-display);font-weight:800;font-size:clamp(34px,9vw,52px);letter-spacing:-.02em;text-align:center;margin:10px 0 2px;overflow-wrap:anywhere}
+.wko{text-align:center;color:var(--muted);margin-bottom:16px}
+.gbtns{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.gb{font:800 24px var(--f-display);padding:16px 6px;border-radius:12px;border:2px solid var(--line);background:var(--surface);min-height:64px}
+.gb.der{border-color:var(--der)}.gb.die{border-color:var(--die)}.gb.das{border-color:var(--das)}
+.gb.der:hover:not(:disabled){background:var(--der-bg)}.gb.die:hover:not(:disabled){background:var(--die-bg)}.gb.das:hover:not(:disabled){background:var(--das-bg)}
+.gb.right{background:var(--ok-bg);box-shadow:0 0 0 3px var(--ok)}
+.gb.wrong{background:var(--bad-bg);box-shadow:0 0 0 3px var(--bad);opacity:1}
+.gb kbd{display:block;font:500 11px var(--f-mono);color:var(--muted)}
+.fb{border-radius:10px;padding:11px 13px;margin-top:12px}
+.fb.ok{background:var(--ok-bg);color:var(--ok)}.fb.bad{background:var(--bad-bg)}.fb.near{background:var(--warn-bg)}
+.fb.bad b.t{color:var(--bad)}
+.fb .tip{color:var(--ink);font-size:14px;margin-top:4px}
+.opt{display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px;font-size:16px;border-radius:10px}
+.opt.right{background:var(--ok-bg);border-color:var(--ok)}.opt.wrong{background:var(--bad-bg);border-color:var(--bad)}.opt.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.q{font-size:19px;font-family:var(--f-display);font-weight:500;margin:6px 0 10px;overflow-wrap:anywhere}
+.q u{display:inline-block;min-width:3.2em;border-bottom:2px solid var(--muted);text-decoration:none}
+.flash{min-height:210px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;gap:6px;padding:20px}
+.flash .big{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,7vw,40px);overflow-wrap:anywhere}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+.tbl th{font-weight:700;color:var(--muted);font-size:12px;letter-spacing:.04em}
+.scroll{overflow-x:auto}
+.stat{display:flex;flex-direction:column;gap:2px;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.stat b{font:800 26px var(--f-display);font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted)}
+mark.x{background:var(--bad-bg);color:var(--bad);border-radius:3px;padding:0 2px}
+mark.m{background:var(--ok-bg);color:var(--ok);border-radius:3px;padding:0 2px}
+.tile{display:inline-block;margin:3px;padding:7px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font:500 16px var(--f-display);cursor:pointer}
+.tile.used{opacity:.25;pointer-events:none}
+.ans{min-height:56px;border:1px dashed var(--muted);border-radius:10px;padding:6px;margin:8px 0;background:var(--soft)}
+.ans .tile{background:var(--surface)}
+.dl{display:grid;grid-template-columns:2.2em 1fr;gap:4px 8px;padding:8px 0;border-bottom:1px solid var(--line)}
+.dl .sp{font:800 14px var(--f-display);color:var(--accent);padding-top:2px}
+.dl .ko{grid-column:2;color:var(--muted);font-size:14px}
+.dl .de{font-size:16px;overflow-wrap:anywhere}
+.ico{padding:3px 9px;min-height:28px;font-size:13px}
+.chk li{margin:3px 0;list-style:none}.chk{padding:0;margin:8px 0}
+.chk .y{color:var(--ok)}.chk .n{color:var(--bad)}
+details{margin:8px 0}summary{cursor:pointer;font-weight:500}
+.spec{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.spec button{font:700 15px var(--f-display);min-width:40px;padding:4px 10px;min-height:34px}
+.pill{display:inline-block;padding:1px 9px;border-radius:999px;font-size:12px;background:var(--soft);color:var(--muted)}
+.sec{margin-top:22px}
+@media (max-width:420px){.gb{font-size:20px}.card{padding:13px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<div class="wrap">
+  <header class="top">
+    <h1 class="brand"><span class="d1">Der</span> <span class="d2">Die</span> <span class="d3">Das</span> 연습장</h1>
+    <div class="sub">Dialog 2–5과 · Übung Lektion 2–5</div>
+  </header>
+  <nav class="tabs" id="tabs" aria-label="메뉴"></nav>
+  <main id="app"></main>
+</div>
+<script>
+/* ===== DATA ===== */
+const NOUN_RAW=`
+#A
+m|Lehrer|선생님|Lehrer
+f|Wohnung|집, 거주지|Wohnungen
+m|Maler|화가, 도장공|Maler
+m|Architekt|건축가|Architekten
+f|Begrüßung|환영, 인사|Begrüßungen
+m|Name|이름|Namen
+n|Land|땅, 나라, 시골|Länder
+m|Wohnort|거주지(지역)|Wohnorte
+m|Beruf|직업|Berufe
+m|Abschied|작별, 출발|Abschiede
+f|Stadt|도시|Städte
+m|Politiker|정치가|Politiker
+m|Spieler|경기자, 선수|Spieler
+m|Schauspieler|배우|Schauspieler
+n|Wetter|날씨|—
+m|Kaffee|커피|Kaffees
+n|Café|커피숍, 카페|Cafés
+f|Sonne|태양|Sonnen
+m|Platz|광장, 좌석|Plätze
+m|Spaziergang|산책|Spaziergänge
+m|Garten|정원|Gärten
+f|Zeit|시간|Zeiten
+f|Prüfung|시험, 검사|Prüfungen
+f|Flasche|물병, 병|Flaschen
+n|Buch|책|Bücher
+m|Tee|차|Tees
+n|Hemd|셔츠|Hemden
+f|Bluse|블라우스|Blusen
+f|Jacke|재킷|Jacken
+m|Rock|치마|Röcke
+f|Tasche|가방, 주머니|Taschen
+f|Lederhose|가죽바지|Lederhosen
+f|Brille|안경|Brillen
+f|Mütze|모자(베레모, 비니)|Mützen
+m|Rucksack|배낭|Rucksäcke
+f|Socke|양말|Socken
+f|Familie|가족|Familien
+f|Bank|은행, 벤치|Banken/Bänke
+p|Eltern|부모|—
+f|Nähe|근처, 인접|—
+f|Woche|주(週)|Wochen
+n|Geschwister|형제자매|Geschwister
+m|Bruder|형제, 오빠, 남동생|Brüder
+f|Schwester|자매, 누이|Schwestern
+n|Jahr|년, 해|Jahre
+m|Schüler|학생(초중고)|Schüler
+p|Großeltern|조부모|—
+n|Klavier|피아노|Klaviere
+m|Arzt|의사|Ärzte
+m|Tisch|탁자, 테이블|Tische
+f|Dame|귀부인, 숙녀|Damen
+m|Junge|소년, 젊은이|Jungen
+m|Freund|친구|Freunde
+m|Herr|신사, 주인, ~씨|Herren
+m|Enkel|손자|Enkel
+m|Onkel|아저씨, 삼촌|Onkel
+f|Tante|이모, 고모|Tanten
+f|Geige|바이올린|Geigen
+m|Techniker|기술자|Techniker
+m|Vermieter|임대인, 집주인|Vermieter
+#B
+n|Zimmer|방|Zimmer
+n|Badezimmer|욕실|Badezimmer
+f|Küche|부엌, 주방|Küchen
+f|Ecke|구석, 코너|Ecken
+n|Fenster|창문|Fenster
+n|Bett|침대|Betten
+f|Wand|벽|Wände
+n|Bild|그림, 화면|Bilder
+n|Regal|선반, 책장|Regale
+m|Balkon|발코니|Balkone/Balkons
+m|Boden|바닥, 땅|Böden
+f|Tür|문|Türen
+m|Schrank|장, 옷장|Schränke
+f|Lampe|램프, 등|Lampen
+m|Baum|나무|Bäume
+n|Kino|영화관|Kinos
+m|Teppich|카펫|Teppiche
+f|Mensa|학생식당|Mensen/Mensas
+m|Umzug|이사|Umzüge
+n|Fleisch|고기, 육류|—
+f|Decke|천장, 이불|Decken
+n|Heft|공책|Hefte
+f|Hausaufgabe|숙제|Hausaufgaben
+m|Film|영화, 필름|Filme
+m|Stuhl|의자|Stühle
+#X
+n|Kaufhaus|백화점|Kaufhäuser
+m|Mantel|외투|Mäntel
+n|Auto|자동차|Autos
+n|Kind|아이|Kinder
+m|Musiker|음악가|Musiker
+f|Gitarre|기타|Gitarren
+n|Arbeitszimmer|서재|Arbeitszimmer
+m|Spiegel|거울|Spiegel
+f|Küste|해안|Küsten
+n|Bad|욕실|Bäder
+m|Vorname|이름(성 앞의 이름)|Vornamen
+f|Mutter|어머니|Mütter
+m|Vater|아버지|Väter
+f|Großmutter|할머니|Großmütter
+m|Großvater|할아버지|Großväter
+f|Freundin|여자친구, 여자 친구|Freundinnen
+n|Haus|집|Häuser
+n|Sofa|소파|Sofas
+n|Wörterbuch|사전|Wörterbücher
+m|Student|대학생|Studenten
+f|Studentin|여대생|Studentinnen
+f|Million|백만|Millionen
+n|Bücherregal|책장|Bücherregale
+m|Kleiderschrank|옷장|Kleiderschränke
+f|Schule|학교|Schulen
+m|Park|공원|Parks
+n|Restaurant|식당|Restaurants
+n|Theater|극장|—
+m|Sport|스포츠, 운동|—
+`;
+const GRP={A:'Lektion 2–4 명사',B:'Lektion 5 집·방',X:'연습문제 속 명사'};
+
+/* 명사별 성별 기억 팁 (수동) */
+const TIPS={
+Name:'-e로 끝나도 der (der Name, der Junge는 남성 약변화 명사)',
+Junge:'-e로 끝나도 der (남성 약변화 명사: Junge, Name, Herr)',
+Herr:'der Herr, 복수는 die Herren (남성 약변화)',
+Kaffee:'음료 대부분 der: der Kaffee, der Tee (예외 das Wasser, das Bier)',
+Tee:'음료 대부분 der: der Kaffee, der Tee (예외 das Wasser, das Bier)',
+Café:'외래어 -é → das',
+Kino:'외래어 -o → 대체로 das (das Kino, das Auto)',
+Auto:'외래어 -o → 대체로 das (das Kino, das Auto)',
+Wetter:'-er로 끝나지만 das: das Wetter, das Zimmer, das Fenster',
+Zimmer:'-er로 끝나지만 das: das Zimmer, das Fenster, das Wetter',
+Badezimmer:'합성어는 마지막 단어의 성: Bad + das Zimmer → das Badezimmer',
+Arbeitszimmer:'합성어는 마지막 단어의 성: das Zimmer → das Arbeitszimmer',
+Fenster:'-er로 끝나지만 das: das Fenster, das Zimmer, das Wetter',
+Theater:'-er로 끝나지만 das (das Theater)',
+Mensa:'-a로 끝나는 외래어 → die (die Mensa); 단 das Sofa',
+Sofa:'-a로 끝나도 das (das Sofa); 단 die Mensa',
+Hemd:'의류: der Rock, der Mantel, das Hemd / die Jacke, die Bluse, die Mütze, die Socke (-e는 die)',
+Rock:'의류: der Rock, der Mantel, der Rucksack / das Hemd / -e로 끝나면 die',
+Mantel:'의류: der Mantel, der Rock, der Rucksack / das Hemd',
+Rucksack:'의류·가방: der Rucksack, der Mantel / die Tasche',
+Platz:'der Platz (교재 hwp의 das Platz는 오타) 복수 Plätze',
+Jahr:'das Jahr (교재의 das Jahre는 오타, Jahre는 복수형)',
+Geschwister:'Ge-로 시작하는 집합명사 → das. 일상에서는 복수 die Geschwister로 많이 씀 (시험에서는 교재 표기 das 따르기)',
+Eltern:'복수 전용 명사 → 복수 관사 die',
+Großeltern:'복수 전용 명사 → 복수 관사 die',
+Bank:'die Bank: 은행 Banken / 벤치 Bänke',
+Mutter:'가족: die Mutter, die Schwester, die Tante / der Vater, der Bruder, der Onkel',
+Schwester:'-er로 끝나지만 die (여성 가족): die Schwester, die Mutter',
+Vater:'가족: der Vater, der Bruder, der Onkel / die Mutter, die Schwester',
+Bruder:'가족: der Bruder, der Vater, der Onkel / die Schwester',
+Kind:'das Kind (복수 die Kinder)',
+Kaufhaus:'합성어는 마지막 단어의 성: das Haus → das Kaufhaus',
+Haus:'das Haus, 복수 Häuser',
+Wörterbuch:'합성어는 마지막 단어의 성: das Buch → das Wörterbuch',
+Bücherregal:'합성어는 마지막 단어의 성: das Regal → das Bücherregal',
+Kleiderschrank:'합성어는 마지막 단어의 성: der Schrank → der Kleiderschrank',
+Vorname:'합성어는 마지막 단어의 성: der Name → der Vorname',
+Großmutter:'합성어는 마지막 단어의 성: die Mutter → die Großmutter',
+Großvater:'합성어는 마지막 단어의 성: der Vater → der Großvater',
+Deutschlehrer:'합성어: der Lehrer',
+Spaziergang:'-gang → der (der Spaziergang)',
+Umzug:'-zug → der (der Umzug)',
+Balkon:'der Balkon (복수 Balkone/Balkons)',
+Teppich:'가구·바닥: der Teppich, der Tisch, der Stuhl, der Schrank, der Boden / das Bett, das Regal / die Lampe, die Tür',
+Tisch:'가구: der Tisch, der Stuhl, der Schrank / das Bett, das Regal / die Lampe',
+Stuhl:'가구: der Tisch, der Stuhl, der Schrank / das Bett, das Regal / die Lampe',
+Schrank:'가구: der Tisch, der Stuhl, der Schrank / das Bett, das Regal / die Lampe',
+Bett:'가구: das Bett, das Regal, das Sofa / der Tisch, der Stuhl / die Lampe',
+Regal:'가구: das Regal, das Bett, das Sofa / der Tisch, der Stuhl',
+Boden:'der Boden, 복수 Böden',
+Wand:'die Wand, 복수 Wände',
+Tür:'die Tür (-ür 어미, 복수 Türen)',
+Stadt:'die Stadt, 복수 Städte',
+Land:'das Land, 복수 Länder',
+Zeit:'die Zeit',
+Woche:'-e → die (시간 단위: die Woche, das Jahr, der Tag)',
+Film:'der Film, 복수 Filme',
+Buch:'das Buch, 복수 Bücher',
+Heft:'das Heft, 복수 Hefte',
+Bild:'das Bild, 복수 Bilder',
+Fleisch:'das Fleisch (복수 없음)',
+Sport:'der Sport (복수 없음)',
+Arzt:'der Arzt, 복수 Ärzte (여성형 die Ärztin)',
+Schüler:'-er(사람) → der / 여성형은 die Schülerin',
+Student:'-ent(사람) → der / 여성형은 die Studentin',
+Park:'der Park, 복수 Parks',
+Restaurant:'외래어 대부분 das: das Restaurant',
+Klavier:'das Klavier (복수 Klaviere)',
+Enkel:'-el → 대체로 der: der Enkel, der Onkel, der Spiegel, der Mantel',
+Onkel:'-el → 대체로 der: der Onkel, der Enkel, der Spiegel',
+Spiegel:'-el → 대체로 der: der Spiegel, der Mantel',
+Tasche:'-e로 끝나면 대부분 die',
+};
+
+/* 성별 규칙 (자동 판별) */
+const RULES=[
+{id:'ung',g:'f',re:/(ung|heit|keit|schaft|ion|tät)$/,t:'-ung / -heit / -keit / -schaft / -ion → 거의 항상 die'},
+{id:'in',g:'f',re:/in$/,t:'-in (여성형 인물) → 항상 die'},
+{id:'chen',g:'n',re:/(chen|lein)$/,t:'축소형 -chen / -lein → 항상 das'},
+{id:'ist',g:'m',re:/(ist|ent|ant|ekt)$/,t:'사람을 가리키는 -ist / -ent / -ant / -ekt → der'},
+{id:'ie',g:'f',re:/ie$/,t:'-ie → die'},
+{id:'er',g:'m',re:/(er|el)$/,t:'-er / -el (사람·직업, 가족) → 대체로 der'},
+{id:'e',g:'f',re:/e$/,t:'-e로 끝나는 명사 → 대부분 die'},
+{id:'o',g:'n',re:/(o|é)$/,t:'외래어 -o / -é → 대체로 das'},
+];
+function ruleFor(n){return RULES.find(r=>r.re.test(n.de))||null}
+
+/* 동사 : de|ko|자타|du/er 형태|비고 */
+const VERB_RAW=`
+sein|이다, 있다|자|ich bin · du bist · er ist · wir sind · ihr seid|불규칙(필수)
+haben|가지다|타|ich habe · du hast · er hat|+4격
+kommen|오다, ~출신이다|자|du kommst · er kommt|aus + 3격
+heißen|~라고 불리다|자|du heißt · er heißt|
+wohnen|살다, 거주하다|자|du wohnst · er wohnt|in + 3격
+studieren|대학에 다니다|자·타|du studierst · er studiert|
+machen|하다, 만들다|타|du machst · er macht|
+arbeiten|일하다|자|du arbeitest · er arbeitet|어간이 -t로 끝나 -est
+tanzen|춤추다|자·타|du tanzt · er tanzt|
+malen|칠하다, 그리다|자·타|du malst · er malt|
+gehen|가다, 걷다|자|du gehst · er geht|
+trinken|마시다|자·타|du trinkst · er trinkt|
+finden|발견하다, 찾다|타|du findest · er findet|어간이 -d로 끝나 -est
+nehmen|잡다, 받다, 먹다|타|du nimmst · er nimmt|e→i 불규칙
+kennen|알다|타|du kennst · er kennt|
+spielen|놀다, 연주하다|자·타|du spielst · er spielt|
+scheinen|빛나다|자|du scheinst · er scheint|
+tragen|나르다, 입다|타|du trägst · er trägt|a→ä 불규칙
+sitzen|앉아 있다|자|du sitzt · er sitzt|
+reden|말하다|자·타|du redest · er redet|어간이 -d로 끝나 -est
+besuchen|방문하다|타|du besuchst · er besucht|
+leben|살아 있다, 살다|자|du lebst · er lebt|
+treiben|몰다, (운동을) 하다|타|du treibst · er treibt|Sport treiben
+vermissen|그리워하다|타|du vermisst · er vermisst|
+fehlen|없다, 그립다|자·타|du fehlst · er fehlt|+3격 (Sie fehlen mir)
+lieben|사랑하다|타|du liebst · er liebt|
+schreiben|쓰다|자·타|du schreibst · er schreibt|
+suchen|찾다|자·타|du suchst · er sucht|
+helfen|돕다|자|du hilfst · er hilft|+3격, e→i 불규칙
+treffen|만나다, 명중하다|자·타|du triffst · er trifft|e→i, +4격
+beschreiben|묘사하다|타|du beschreibst · er beschreibt|
+gefallen|마음에 들다|자|du gefällst · er gefällt|+3격, a→ä
+sehen|보다|타|du siehst · er sieht|e→ie 불규칙
+stehen|서 있다|자|du stehst · er steht|위치: Wo?
+hängen|걸려 있다 (자동사)|자|du hängst · er hängt|위치: Wo? (3격)
+geben|주다|타|du gibst · er gibt|es gibt + 4격
+möchten|~하고 싶다 (조동사)|조|ich möchte · du möchtest · er möchte|동사원형은 문장 끝
+stellen|세우다, 놓다|타|du stellst · er stellt|방향: Wohin? (4격)
+hängen2|걸다 (타동사)|타|du hängst · er hängt|방향: Wohin? (4격)
+legen|눕히다, 놓다|타|du legst · er legt|방향: Wohin? (4격)
+liegen|놓여 있다|자|du liegst · er liegt|위치: Wo? (3격)
+ziehen|끌다, 당기다|타|du ziehst · er zieht|
+umziehen|이사하다, 갈아입다|자·타|du ziehst … um · er zieht … um|분리동사
+aussehen|~한 모습이다|자|du siehst … aus · er sieht … aus|분리동사, e→ie
+fragen|질문하다|타|du fragst · er fragt|
+fahren|가다, 타고 가다|자·타|du fährst · er fährt|a→ä 불규칙
+fallen|떨어지다|자|du fällst · er fällt|a→ä 불규칙
+essen|먹다|타|du isst · er isst|e→i 불규칙
+lesen|읽다|자·타|du liest · er liest|e→ie 불규칙
+`;
+const OTHER_RAW=`
+aus|~에서, ~출신|전치사 + 3격
+auf|~위에, ~에서|전치사 3·4격
+woher|어디로부터|의문사
+was|무엇|의문사
+wo|어디에|의문사 (위치)
+wohin|어디로|의문사 (방향)
+wie|어떻게, 어떤|의문사
+wer|누구|의문사
+aber|그러나|접속사
+jetzt|지금|부사
+dort|거기에서|부사
+beruflich|직업상, 직업적으로|부사
+mal|한번 (=einmal)|부사
+nach|~쪽으로, ~후에|전치사 + 3격
+immer|늘, 항상|부사
+herzlich|진심의, 마음에서 우러난|형용사
+willkommen|환영받는|형용사
+von|~의, ~로부터|전치사 + 3격
+nicht|아니다 (부정)|부사
+prima|멋진, 훌륭한|형용사
+heute|오늘|부사
+sehr|매우|부사
+schön|아름다운, 좋은|형용사
+bald|곧|부사
+hier|여기|부사
+draußen|밖에서|부사
+wirklich|정말, 진정한|형용사·부사
+später|나중에|부사
+vorbei|지나간, 끝난|부사
+viel|많은|형용사
+groß|큰, 높은|형용사
+laut|시끄러운|형용사
+morgen|내일|부사
+schlecht|나쁜|형용사
+wunderschön|매우 아름다운|형용사
+weiß|하얀|형용사 (색)
+schwarz|검은|형용사 (색)
+grau|회색의|형용사 (색)
+blau|파란|형용사 (색)
+grün|초록의|형용사 (색)
+gelb|노란|형용사 (색)
+braun|갈색의|형용사 (색)
+rot|빨간|형용사 (색)
+über|~위에, ~를 넘어서|전치사 3·4격
+mindestens|적어도, 최소한|부사
+pro|~마다, ~당|전치사 + 4격
+alt|~살인, 늙은, 낡은|형용사
+auch|~도, 또한|부사
+nur|다만, 단지|부사
+noch|아직, 여전히|부사
+gesund|건강한|형용사
+regelmäßig|규칙적으로|부사 (교재의 regalmäßig는 오타)
+eigentlich|사실, 원래|부사
+da|저기, 거기|부사
+jung|젊은, 어린|형용사
+klug|영리한|형용사
+bei|~옆에, ~에게서|전치사 + 3격
+sauber|깨끗한|형용사
+relativ|상대적인, 비교적|부사
+ungefähr|대략|부사
+möbliert|가구가 갖춰진|형용사
+voll|가득 찬, 완전히|형용사
+neben|~옆에|전치사 3·4격
+an|~곁에, ~에 접하여|전치사 3·4격
+vor|~앞에|전치사 3·4격
+hinter|~뒤에|전치사 3·4격
+unter|~아래에|전치사 3·4격
+zwischen|~사이에|전치사 3·4격
+in|~안에|전치사 3·4격
+zwar … aber|~하긴 하지만 …|접속
+sogar|게다가, 심지어|부사
+leider|유감스럽게도|부사
+klein|작은|형용사
+`;
+
+/* 문법 문제: cat|문장(___ 빈칸)|정답|오답1;오답2;오답3|해설 */
+const GRAM_CATS={v:'동사 인칭변화',q:'의문사',a:'부정관사·kein',p:'소유관사',c:'격변화(2·3·4격)',w:'위치·방향 전치사',n:'부정(nicht/kein)',o:'어순',f:'가족 관계',z:'숫자 쓰기'};
+const GRAM_RAW=`
+v|Ich ___ aus Korea.|komme|kommst;kommt;kommen|ich → 동사 어미 -e
+v|Woher ___ du?|kommst|komme;kommt;kommen|du → 어미 -st
+v|Er ___ in Berlin.|wohnt|wohne;wohnst;wohnen|er → 어미 -t
+v|Wie ___ Sie?|heißen|heißt;heiße;heißst|Sie(존칭) → 동사원형과 같은 형태 -en
+v|Wie ___ du?|heißt|heißen;heiße;heißest|du heißt (어간이 ß로 끝나면 -st의 s 생략)
+v|Du ___ in Seoul.|wohnst|wohne;wohnt;wohnen|du → -st
+v|Er ___ Lehrer.|ist|bin;bist;sind|sein: ich bin / du bist / er ist
+v|Wir ___ Studenten.|sind|ist;seid;bin|sein: wir sind
+v|Du ___ viel Zeit.|hast|habe;hat;habt|haben: ich habe / du hast / er hat
+v|Er ___ einen Bruder.|hat|hast;haben;habe|haben: er hat
+v|Du ___ einen Tee.|nimmst|nehmst;nimmt;nehme|nehmen: du nimmst, er nimmt (e→i)
+v|Julia ___ Klavier.|spielt|spielen;spielst;spiele|3인칭 단수 → -t
+v|Sie ___ regelmäßig Sport.|treibt|treiben;treibst;treibe|3인칭 단수 (Sie = 그녀) → -t
+v|Du ___ Hana morgen.|triffst|treffst;trefft;triffe|treffen: du triffst, er trifft (e→i)
+v|Er ___ mir bei der Wohnungssuche.|hilft|helft;helfen;hilfst|helfen: er hilft (e→i), +3격
+v|Er ___ morgen nach Berlin.|fährt|fahrt;fahrst;fahren|fahren: er fährt (a→ä)
+v|Du ___ gern Fleisch.|isst|esst;essen;isse|essen: du isst, er isst
+v|Er ___ ein Buch.|liest|lest;lesen;lesst|lesen: er liest (e→ie)
+v|Du ___ heute gut aus.|siehst|sehst;sieht;sehen|aussehen(분리동사): du siehst … aus
+v|Wir ___ einen Spaziergang.|machen|macht;mache;machst|wir → -en
+v|Ihr ___ in Köln.|wohnt|wohnen;wohnst;wohne|ihr → -t
+v|Er ___ im Café.|arbeitet|arbeitt;arbeitest;arbeiten|어간이 -t로 끝나면 er arbeitet
+v|Du ___ die Wohnung schön.|findest|findst;findt;finden|어간이 -d로 끝나면 du findest
+v|Die Sonne ___.|scheint|scheinst;scheinen;scheine|3인칭 단수 → -t
+v|Sie ___ einen Rock.|trägt|tragt;tragst;trage|tragen: er/sie trägt (a→ä)
+v|Das Bild ___ an der Wand.|hängt|hängst;hängen;hänge|3인칭 단수 → -t (위치: 3격)
+v|Ich ___ einen Kaffee trinken.|möchte|möchtest;möchten;möchtet|möchten: ich möchte / er möchte
+v|Das Haus ___ ihr nicht.|gefällt|gefallt;gefällst;gefallen|gefallen: es gefällt (a→ä), +3격
+v|Es ___ einen Balkon.|gibt|gebt;gibst;geben|es gibt + 4격
+v|Die Kinder ___ draußen.|spielen|spielt;spielst;spiele|복수 → -en
+q|___ kommen Sie?|Woher|Wohin;Wo;Wie|출신 → Woher
+q|___ wohnst du?|Wo|Woher;Wohin;Was|위치 → Wo
+q|___ gehen Sie?|Wohin|Wo;Woher;Was|방향 → Wohin
+q|___ heißen Sie?|Wie|Was;Wer;Wo|이름 → Wie heißen Sie?
+q|___ machen Sie beruflich?|Was|Wie;Wer;Wo|직업 → Was machen Sie beruflich?
+q|___ ist die Dame da?|Wer|Was;Wie;Wo|사람 → Wer
+q|___ alt ist deine Schwester?|Wie|Was;Wo;Wer|Wie alt ...?
+q|___ oft besuchst du sie?|Wie|Was;Wo;Wer|Wie oft ...?
+q|___ gefällt dir die Wohnung?|Wie|Was;Wo;Wer|Wie gefällt dir ...?
+q|___ hängt das Bild?|Wo|Wohin;Woher;Wie|위치(있는 곳) → Wo
+q|___ stellst du die Flasche?|Wohin|Wo;Woher;Wie|방향(놓는 곳) → Wohin
+q|___ ist das?|Was|Wer;Wie;Wo|사물 → Was
+q|___ geht es Ihnen?|Wie|Was;Wer;Wo|Wie geht es Ihnen?
+a|Ich habe ___ Bruder.|einen|ein;eine;einem|der Bruder (남성) 4격 → einen
+a|Ich habe ___ Schwester.|eine|einen;ein;einer|die Schwester (여성) 4격 → eine
+a|Ich habe ___ Auto.|ein|einen;eine;einem|das Auto (중성) 4격 → ein
+a|Ich habe ___ Bruder. (없다)|keinen|kein;keine;nicht|kein-는 ein-과 같은 어미: 남성 4격 keinen
+a|Ich habe ___ Geschwister. (없다)|keine|keinen;kein;nicht|복수 → keine
+a|Das ist ___ Heft.|ein|einen;eine;einem|das Heft 1격 → ein
+a|Wir trinken ___ Kaffee.|einen|ein;eine;einem|der Kaffee 4격 → einen
+a|Es gibt ___ Balkon.|einen|ein;eine;einer|es gibt + 4격, der Balkon → einen
+a|Die Wohnung hat ___ Küche.|eine|einen;ein;einem|die Küche 4격 → eine
+a|Sie hat ___ Klavier.|ein|einen;eine;einem|das Klavier 4격 → ein
+a|Ich suche ___ Wohnung.|eine|einen;ein;einer|die Wohnung 4격 → eine
+a|Sie trägt ___ Mütze.|eine|einen;ein;einer|die Mütze 4격 → eine
+a|Wir machen ___ Spaziergang.|einen|ein;eine;einem|der Spaziergang 4격 → einen
+a|Ich nehme ___ Tee.|einen|ein;eine;einem|der Tee 4격 → einen
+p|Das ist ___ Mutter. (내)|meine|mein;meinen;meiner|die Mutter 1격 → meine
+p|___ Vater ist Arzt. (내)|Mein|Meine;Meinen;Meinem|der Vater 1격 → mein
+p|Das ist Klaus. ___ Mütze ist groß. (그의)|Seine|Sein;Ihre;Ihr|die Mütze 1격 + 그의 → seine
+p|Das ist Anna. ___ Mantel ist schwarz. (그녀의)|Ihr|Ihre;Sein;Seine|der Mantel 1격 + 그녀의 → ihr
+p|Ich besuche ___ Eltern. (내)|meine|mein;meinen;meiner|복수 4격 → meine
+p|Wie ist ___ Name? (당신의, 존칭)|Ihr|Dein;Ihre;Sein|존칭 Sie → Ihr (der Name)
+p|Wie ist ___ Name? (너의)|dein|deine;deinen;deiner|der Name 1격 → dein
+p|Ich habe ___ Bruder. (내)|meinen|mein;meine;meinem|der Bruder 4격 → meinen
+p|Julia liebt ___ Eltern. (자신의)|ihre|seine;ihr;ihren|Julia(여) → ihr-, 복수 4격 → ihre
+p|Er liebt ___ Schwester. (자신의)|seine|ihre;sein;seinen|er → sein-, die Schwester 4격 → seine
+p|Wo wohnen ___ Eltern? (너의)|deine|dein;deinen;deiner|복수 1격 → deine
+p|Hana besucht ___ Großmutter. (자신의)|ihre|seine;ihr;ihren|Hana(여) → ihr-, die Großmutter 4격 → ihre
+c|Das Auto ___ Mutter ist teuer. (내 어머니의)|meiner|meine;meinen;meines|2격 여성 → meiner
+c|Der Bruder ___ Vaters hat vier Kinder. (내 아버지의)|meines|meinem;meinen;meiner|2격 남성 → meines + Vaters(-s)
+c|Das Haus ___ Freundes gefällt ihr nicht. (그녀의)|ihres|ihrem;ihre;ihren|2격 남성/중성 → ihres
+c|Leon hilft ___ Schwester. (자신의)|seiner|seine;seinen;seines|helfen + 3격, 여성 → seiner
+c|Er hilft ___ Bruder beim Umzug. (자신의)|seinem|seinen;sein;seiner|helfen + 3격, 남성 → seinem
+c|Hana hilft ___ bei der Wohnungssuche. (Minho)|ihm|ihn;er;ihr|helfen + 3격 → ihm
+c|Die Wohnung gefällt ___ . (나에게)|mir|mich;ich;mein|gefallen + 3격 → mir
+c|Wie gefällt ___ die Wohnung? (너에게)|dir|dich;du;dein|gefallen + 3격 → dir
+c|Ich liebe ___ . (너를)|dich|dir;du;dein|lieben + 4격 → dich
+c|Sie fehlen ___ sehr. (나에게)|mir|mich;ich;mein|fehlen + 3격 → mir
+c|Der Mantel gefällt ___ . (그녀에게)|ihr|sie;ihm;ihre|gefallen + 3격 → ihr
+c|Wie geht es ___ ? (당신에게)|Ihnen|Sie;Ihr;Ihre|Wie geht es Ihnen? (3격)
+c|Er trifft ___ Vermieter.|den|dem;der;des|treffen + 4격, der Vermieter → den
+w|Das Bild hängt an ___ Wand. (있다)|der|die;den;dem|Wo? → 3격, die Wand → der
+w|Ich hänge das Bild an ___ Wand. (걸다)|die|der;dem;den|Wohin? → 4격, die Wand → die
+w|Ein Bett steht in ___ Ecke.|der|die;dem;den|Wo? → 3격 여성 → der
+w|Neben ___ Bett steht ein Tisch.|dem|den;das;der|Wo? → 3격 중성 → dem
+w|Ich stelle die Flasche auf ___ Tisch.|den|dem;der;das|Wohin? → 4격 남성 → den
+w|Die Flasche steht auf ___ Tisch.|dem|den;der;das|Wo? → 3격 남성 → dem
+w|Er geht in ___ Küche.|die|der;dem;den|Wohin? → 4격 여성 → die
+w|Sie ist in ___ Küche.|der|die;dem;den|Wo? → 3격 여성 → der
+w|Julia geht ___ Kino.|ins|im;in;am|in das = ins (방향)
+w|Wir sind ___ Kino.|im|ins;in der;in die|in dem = im (위치)
+w|Er geht ___ Schule.|in die|in der;in dem;ins|Wohin? → in + 4격 여성 → in die
+w|Ich möchte ein Regal an ___ Wand stellen.|die|der;dem;den|stellen(방향) → 4격 → die
+w|Seine Großeltern leben auf ___ Land.|dem|das;den;der|Wo? → 3격 중성 → auf dem Land
+w|Julia zieht auf ___ Land.|das|dem;den;die|Wohin? → 4격 중성 → auf das (aufs) Land
+w|Die Lampe hängt an ___ Decke. (있다)|der|die;dem;den|Wo? → 3격 여성 → der
+w|Er stellt den Stuhl vor ___ Tür.|die|der;dem;den|stellen → Wohin? → 4격 → die
+w|Ein Junge liegt unter ___ Baum.|dem|den;der;das|Wo? → 3격 남성 → dem
+w|Die Küche ist neben ___ Bad.|dem|das;der;den|Wo? → 3격 중성 → dem
+w|Sie legt ein Wörterbuch auf ___ Tisch.|den|dem;der;das|legen → Wohin? → 4격 → den
+w|Ein Heft liegt auf ___ Sofa.|dem|das;den;der|liegen → Wo? → 3격 중성 → dem
+w|Wir treffen uns ___ Café.|im|ins;in;in das|Wo? in dem = im
+w|Er hilft mir ___ Umzug.|beim|im;am;vom|bei dem = beim
+w|Sie gehen ___ Küste.|an die|an der;am;an den|Wohin? → an + 4격 여성 → an die
+n|Ich bin ___ Student.|kein|nicht;keinen;keine|명사 앞 부정 → kein
+n|Ich wohne ___ in Köln.|nicht|kein;keine;keinen|명사 없는 부정 → nicht
+n|Er hat ___ Zeit.|keine|nicht;kein;keinen|die Zeit → keine
+n|Das Zimmer ist ___ möbliert.|nicht|kein;keine;keinen|형용사 부정 → nicht
+n|In der Wohnung gibt es ___ Badezimmer.|kein|nicht;keine;keinen|das Badezimmer → kein
+n|Es gibt ___ Balkon.|keinen|nicht;kein;keine|der Balkon 4격 → keinen
+n|Er gefällt ihr ___ .|nicht|kein;keine;keinen|동사 부정 → nicht (문장 끝)
+o|Welcher Satz ist richtig?|Morgen mache ich eine Prüfung.|Morgen ich mache eine Prüfung.;Morgen eine Prüfung mache ich.;Ich morgen mache eine Prüfung.|평서문에서 동사는 항상 둘째 자리
+o|Welcher Satz ist richtig?|Später machen wir einen Spaziergang.|Später wir machen einen Spaziergang.;Wir später einen machen Spaziergang.;Später einen Spaziergang machen wir.|부사가 문장 앞에 오면 동사 → 주어 순서
+o|Welcher Satz ist richtig?|Jetzt wohne ich in Berlin.|Jetzt ich wohne in Berlin.;Ich jetzt wohne in Berlin.;Jetzt in Berlin wohne ich.|동사 둘째 자리
+o|Welcher Satz ist richtig?|Dort studiere ich.|Dort ich studiere.;Ich dort studiere.;Dort studieren ich.|동사 둘째 자리, 주어는 그 뒤
+o|Welcher Satz ist richtig?|Ich möchte ein Regal an die Wand stellen.|Ich möchte stellen ein Regal an die Wand.;Ich stellen möchte ein Regal an die Wand.;Ich möchte ein Regal an die Wand stelle.|조동사 문장: 본동사 원형은 문장 끝
+o|Welcher Satz ist richtig?|Er geht morgen früh in die Schule.|Er morgen geht früh in die Schule.;Er geht in die Schule morgen früh.;Morgen er geht früh in die Schule.|동사는 둘째 자리, 시간 표현은 방향보다 앞
+o|Welcher Satz ist richtig?|Heute habe ich viel Zeit.|Heute ich habe viel Zeit.;Ich heute habe viel Zeit.;Heute viel Zeit habe ich.|동사 둘째 자리
+o|Welcher Satz ist richtig?|Sie ist zwar alt, aber sehr gesund.|Sie ist zwar alt, aber sehr gesund sie.;Sie zwar ist alt, aber gesund sehr.;Zwar sie ist alt, aber sehr gesund.|zwar A, aber B 구문
+f|Der Vater meines Vaters ist mein ___ .|Großvater|Onkel;Bruder;Enkel|아버지의 아버지 → 할아버지
+f|Die Schwester meiner Mutter ist meine ___ .|Tante|Großmutter;Cousine;Nichte|어머니의 자매 → 이모
+f|Der Bruder meines Vaters ist mein ___ .|Onkel|Großvater;Enkel;Neffe|아버지의 형제 → 삼촌
+f|Ich bin der ___ meiner Großeltern.|Enkel|Onkel;Bruder;Sohn|조부모의 손자 → Enkel
+f|Meine Brüder und Schwestern sind meine ___ .|Geschwister|Eltern;Großeltern;Enkel|형제자매 → Geschwister
+f|Die Mutter meiner Mutter ist meine ___ .|Großmutter|Tante;Schwester;Freundin|어머니의 어머니 → 할머니
+z|6 → ___|sechs|||
+z|7 → ___|sieben|||
+z|12 → ___|zwölf|||
+z|13 → ___|dreizehn|||
+z|16 → ___|sechzehn|||
+z|17 → ___|siebzehn|||
+z|19 → ___|neunzehn|||
+z|21 → ___|einundzwanzig|||
+z|23 → ___|dreiundzwanzig|||
+z|26 → ___|sechsundzwanzig|||
+z|30 → ___|dreißig|||
+z|31 → ___|einunddreißig|||
+z|33 → ___|dreiunddreißig|||
+z|43 → ___|dreiundvierzig|||
+z|45 → ___|fünfundvierzig|||
+`;
+
+/* 번역 작문 문장 : de|ko  (Übung / Lektion6 정리본) */
+const TRANS_RAW=`
+Woher kommen Sie?|어디에서 오셨습니까?
+Ich komme aus Incheon.|저는 인천에서 왔습니다.
+Wo wohnst du?|너는 어디에 사니?
+Ich wohne in Frankfurt.|나는 프랑크푸르트에 살아.
+Wie heißt er?|그의 이름은 무엇인가요?
+Sein Name ist Karl Schmidt.|그의 이름은 카를 슈미트입니다.
+Wie geht es Ihnen?|어떻게 지내십니까?
+Danke, es geht mir gut.|감사합니다. 저는 잘 지냅니다.
+Was ist das?|저것은 무엇인가요?
+Das ist ein Heft.|저것은 공책입니다.
+Hast du Geschwister?|너는 형제자매가 있니?
+Nein, ich habe keine Geschwister.|아니, 나는 형제자매가 없어.
+Hast du einen Bruder?|너는 남자 형제가 있니?
+Nein, ich habe keinen Bruder.|아니, 나는 남자 형제가 없어.
+Was sind Sie von Beruf?|직업이 무엇입니까?
+Ich bin Architekt.|저는 건축가입니다.
+Wie ist Ihr Vorname?|이름이 무엇입니까?
+Mein Vorname ist Thomas.|제 이름은 토마스입니다.
+Wer ist die Dame da?|저기 있는 여성은 누구입니까?
+Das ist meine Mutter.|저분은 제 어머니입니다.
+Seine Mütze ist groß.|그의 모자는 큽니다.
+Sie ist sehr teuer.|그것은 매우 비쌉니다.
+Ihr Mantel ist schwarz.|그녀의 외투는 검은색입니다.
+Er gefällt ihr sehr.|그녀는 그것을 매우 마음에 들어 합니다.
+Wo hängt das Bild?|그림은 어디에 걸려 있나요?
+Es hängt an der Wand.|그것은 벽에 걸려 있습니다.
+Wohin gehen Sie?|어디로 가십니까?
+Sie gehen an die Küste.|당신은 해안으로 갑니다.
+Wo ist die Küche?|부엌은 어디에 있나요?
+Sie ist neben dem Bad.|부엌은 욕실 옆에 있습니다.
+Wohin stellst du die Flasche?|너는 병을 어디에 놓니?
+Ich stelle sie auf den Tisch.|나는 그것을 탁자 위에 놓아.
+Das Auto meiner Mutter ist teuer.|우리 어머니의 자동차는 비쌉니다.
+Es kostet sechsundzwanzig Millionen Won.|그것은 2,600만 원입니다.
+Meine Großeltern haben drei Kinder.|우리 조부모님은 자녀가 세 명 있습니다.
+Mein Vater hat auch drei Kinder.|우리 아버지도 자녀가 세 명 있습니다.
+Der Bruder meines Vaters hat vier Kinder, und seine Schwester hat zwei Kinder.|우리 아버지의 형제는 자녀가 네 명 있고, 그의 자매는 자녀가 두 명 있습니다.
+Wie groß ist die Wohnung?|그 집은 얼마나 넓나요?
+Sie ist dreiundvierzig Quadratmeter groß.|그 집은 43제곱미터입니다.
+Wie alt ist deine Freundin?|네 여자친구는 몇 살이니?
+Meine Freundin ist siebzehn Jahre alt.|내 여자친구는 열일곱 살이야.
+Leon hilft seiner Schwester beim Umzug.|레온은 자신의 자매가 이사하는 것을 돕습니다.
+Christine sucht die Wohnung.|크리스티네는 그 집을 찾습니다.
+Julia liebt ihre Eltern.|율리아는 자신의 부모님을 사랑합니다.
+Das Haus ihres Freundes gefällt ihr nicht.|그녀는 자기 남자친구의 집을 마음에 들어 하지 않습니다.
+Sie sind immer herzlich willkommen.|당신은 언제나 진심으로 환영받습니다.
+Was machen Sie beruflich?|직업이 무엇입니까?
+Das Wetter ist sehr schön.|날씨가 매우 좋습니다.
+Momentan bin ich sehr beschäftigt.|현재 저는 매우 바쁩니다.
+Das Zimmer ist voll möbliert.|그 방에는 가구가 완비되어 있습니다.
+Er ist Musiker.|그는 음악가입니다.
+Er spielt Gitarre.|그는 기타를 연주합니다.
+Wir machen jeden Tag einen Spaziergang.|우리는 매일 산책합니다.
+Manchmal besuche ich meine Eltern.|나는 가끔 부모님을 방문합니다.
+In der Wohnung gibt es kein Arbeitszimmer.|그 집에는 서재가 없습니다.
+Ich möchte einen Spiegel an die Wand hängen.|나는 거울을 벽에 걸고 싶습니다.
+Seine Großeltern leben auf dem Land.|그의 조부모님은 시골에 사십니다.
+Neben dem Bett steht ein Bücherregal.|침대 옆에 책장이 하나 있습니다.
+Er geht morgen früh in die Schule.|그는 내일 아침 학교에 갑니다.
+Meine Schwester wohnt hier in der Nähe.|내 여동생은 이 근처에 삽니다.
+`;
+
+/* 대화문 : spk|독일어|한국어  (spk '' = 지문) */
+const DIALOGS=[
+{id:2,title:'2과 Dialog',topic:'자기소개, 출신, 직업',lines:[
+['','Minho Kim kommt aus Korea. Er ist Student. Klaus Schmidt ist Lehrer.','김민호는 한국 출신이다. 그는 대학생이다. 클라우스 슈미트는 교사이다.'],
+['K','Guten Tag! Ich heiße Klaus Schmidt. Und wie heißen Sie?','안녕하세요! 저는 클라우스 슈미트입니다. 당신은 이름이 어떻게 되시나요?'],
+['M','Ich heiße Minho Kim.','저는 김민호입니다.'],
+['K','Herr Kim, woher kommen Sie?','김 선생님, 어디에서 오셨나요?'],
+['M','Ich komme aus Korea. Und Sie?','저는 한국에서 왔습니다. 당신은요?'],
+['K','Ich komme eigentlich aus Hamburg. Aber ich wohne jetzt in Berlin.','저는 원래 함부르크 출신이에요. 하지만 지금은 베를린에 삽니다.'],
+['M','Ich wohne in München. Dort studiere ich. Was machen Sie beruflich?','저는 뮌헨에 삽니다. 거기서 공부해요. 직업이 무엇인가요?'],
+['K','Ich bin Lehrer. Kommen Sie mal nach Berlin? Sie sind immer herzlich willkommen.','저는 교사입니다. 언제 베를린에 오시겠어요? 언제나 진심으로 환영합니다.'],
+['M','Vielen Dank. Auf Wiedersehen!','감사합니다. 안녕히 계세요!'],
+['K','Auf Wiedersehen!','안녕히 가세요!']]},
+{id:3,title:'3과 Dialog',topic:'인사, 날씨, 카페',lines:[
+['H','Hallo, Julia!','안녕, 율리아!'],
+['J','Hallo, Hana! Wie geht es dir?','안녕, 하나! 어떻게 지내?'],
+['H','Danke. Mir geht es gut. Und dir?','고마워. 잘 지내. 너는?'],
+['J','Prima. Heute ist das Wetter sehr schön. Trinken wir einen Kaffee?','아주 좋아. 오늘 날씨가 정말 좋네. 커피 마실까?'],
+['H','Gerne.','좋아.'],
+['','Bald finden sie ein Café.','곧 그들은 카페를 찾는다.'],
+['J','Die Sonne scheint. Nehmen wir hier draußen Platz?','해가 비치네. 여기 밖에 앉을까?'],
+['H','Ja, das Wetter ist heute wirklich schön. Später machen wir einen Spaziergang im Englischen Garten.','응, 오늘 날씨 정말 좋다. 나중에 영국정원에서 산책하자.'],
+['J','Gute Idee. Hast du denn Zeit?','좋은 생각이야. 너 시간 있어?'],
+['H','Ja, die Prüfung ist vorbei. Ich habe jetzt viel Zeit.','응, 시험이 끝났어. 지금 시간이 많아.'],
+['J','Das ist gut.','잘됐네.']]},
+{id:4,title:'4과 Dialog',topic:'가족',lines:[
+['','Hana und Julia sitzen jetzt auf einer Bank im Englischen Garten. Sie reden über ihre Familien.','하나와 율리아는 지금 영국정원의 벤치에 앉아 있다. 둘은 가족에 대해 이야기한다.'],
+['H','Wo wohnen deine Eltern?','네 부모님은 어디에 사시니?'],
+['J','Meine Eltern wohnen hier in der Nähe.','우리 부모님은 이 근처에 사셔.'],
+['H','Wie oft besuchst du sie?','얼마나 자주 찾아뵈니?'],
+['J','Ich besuche sie mindestens einmal pro Woche.','적어도 일주일에 한 번 찾아가.'],
+['H','Hast du Geschwister?','형제자매 있니?'],
+['J','Ja, ich habe einen Bruder und eine Schwester. Mein Bruder ist 30 Jahre alt. Er ist Deutschlehrer.','응, 남자 형제 한 명과 여자 형제 한 명이 있어. 내 남자 형제는 서른 살이고 독일어 선생님이야.'],
+['H','Und wie alt ist deine Schwester?','네 여자 형제는 몇 살이야?'],
+['J','Sie ist siebzehn. Sie ist Schülerin.','열일곱 살이야. 학생이야.'],
+['H','Hast du auch Großeltern?','조부모님도 계시니?'],
+['J','Ja, aber nur meine Großmutter lebt noch. Sie ist zwar alt, aber sehr gesund. Sie treibt regelmäßig Sport und spielt auch Klavier.','응, 그런데 할머니만 살아 계셔. 연세는 많지만 아주 건강하셔. 규칙적으로 운동하시고 피아노도 치셔.'],
+['H','Ich habe auch Großeltern in Korea. Sie leben auf dem Land.','나도 한국에 조부모님이 계셔. 시골에 사셔.'],
+['J','Vermisst du sie?','그리워하니?'],
+['H','Ja, sie fehlen mir sehr.','응, 많이 보고 싶어.']]},
+{id:5,title:'5과 Dialog',topic:'집 구하기, 방 묘사',lines:[
+['','Minho sucht eine Wohnung. Hana hilft ihm bei der Wohnungssuche. Er trifft den Vermieter. Später beschreibt er Hana die Wohnung.','민호는 집을 구한다. 하나가 집 구하는 것을 도와준다. 그는 집주인을 만난다. 나중에 하나에게 그 집을 설명한다.'],
+['H','Wie gefällt dir die Wohnung?','집 마음에 들어?'],
+['M','Sie gefällt mir sehr gut. Sie ist sauber und relativ groß.','아주 마음에 들어. 깨끗하고 비교적 커.'],
+['H','Wie groß ist die Wohnung?','집은 얼마나 커?'],
+['M','Sie ist ungefähr 40 m² groß. Die Wohnung hat ein Zimmer, ein Badezimmer und eine Küche.','대략 40제곱미터야. 방 하나, 욕실 하나, 부엌 하나가 있어.'],
+['H','Ist das Zimmer möbliert?','방에 가구가 갖춰져 있어?'],
+['M','Ja, es ist voll möbliert.','응, 가구가 완비돼 있어.'],
+['H','Wie sieht das Zimmer aus?','방은 어떻게 생겼어?'],
+['M','In der Ecke am Fenster steht ein Bett. Neben dem Bett steht ein Tisch. An der Wand über dem Tisch hängt sogar ein Bild.','창가 구석에 침대가 있어. 침대 옆에 탁자가 있고, 탁자 위 벽에는 심지어 그림도 걸려 있어.'],
+['H','Gibt es auch ein Bücherregal?','책장도 있어?'],
+['M','Nein, leider nicht. Ich möchte ein Regal an die Wand stellen.','아니, 유감스럽게도 없어. 벽에 선반을 하나 놓고 싶어.'],
+['H','Gibt es einen Balkon?','발코니는 있어?'],
+['M','Ja, er ist aber klein.','응, 그런데 작아.'],
+['H','Das macht nichts.','괜찮아.']]}
+];
+
+/* 질문에 답하기 (Übung 스타일) : q|힌트|모범답안|체크라벨=정규식;... */
+const QA_RAW=`
+Wie heißen Sie?|이름: Monica Maron|Ich heiße Monica Maron.|Ich heiße …=\\bich hei(ß|ss)e\\b
+Woher kommst du?|뮌헨 출신|Ich komme aus München.|Ich komme aus …=\\bich komme aus\\b
+Was machen Sie beruflich?|여대생|Ich bin Studentin.|Ich bin …=\\bich bin (studentin|student|lehrer|lehrerin|maler|malerin|architekt|arzt|schüler)\\w*\\b
+Wo wohnst du?|서울에 산다|Ich wohne in Seoul.|Ich wohne in …=\\bich wohne in\\b
+Wohnen Sie in Köln? (아니오)|아니오, 쾰른에 살지 않는다|Nein, ich wohne nicht in Köln.|Nein=\\bnein\\b;nicht=\\bnicht\\b;wohne=\\bwohne\\b
+Sind Sie Student? (아니오, 건축가)|아니오, 나는 건축가이다|Nein, ich bin Architekt.|Nein=\\bnein\\b;Ich bin=\\bich bin\\b;Architekt=\\barchitekt\\b
+Hast du einen Bruder? (아니오)|형제 없음|Nein, ich habe keinen Bruder.|Nein=\\bnein\\b;keinen Bruder=\\bkeinen bruder\\b
+Hast du Geschwister? (예: 형제 1, 자매 1)|형제와 자매가 있다|Ja, ich habe einen Bruder und eine Schwester.|Ja=\\bja\\b;einen Bruder=\\beinen bruder\\b;eine Schwester=\\beine schwester\\b
+Wie alt ist deine Schwester? (17)|열일곱 살|Sie ist siebzehn Jahre alt.|siebzehn=\\bsiebzehn\\b;Sie ist=\\bsie ist\\b
+Wo hängt das Bild?|벽에 걸려 있다|Es hängt an der Wand.|hängt=\\bh(ä|ae|a)ngt\\b;an der Wand=\\ban der wand\\b
+Wohin stellst du die Flasche? (탁자 위)|탁자 위에 놓는다|Ich stelle sie auf den Tisch.|Ich stelle=\\bich stelle\\b;auf den Tisch=\\bauf den tisch\\b
+Wie gefällt dir die Wohnung?|매우 마음에 든다|Sie gefällt mir sehr gut.|gefällt mir=\\bgef(ä|ae|a)llt mir\\b
+Wie geht es dir?|잘 지낸다|Mir geht es gut.|geht … gut=\\b(mir geht es|es geht mir) gut\\b
+Was machen wir heute? (산책)|산책을 한다|Wir machen einen Spaziergang.|einen Spaziergang=\\beinen spaziergang\\b;Wir machen=\\bwir machen\\b
+Wie sieht das Zimmer aus? (창가 구석에 침대)|침대가 구석에 있다|In der Ecke am Fenster steht ein Bett.|steht=\\bsteht\\b;in der Ecke=\\bin der ecke\\b;ein Bett=\\bein bett\\b
+`;
+
+/* 자유작문 과제 */
+const TASKS=[
+{id:'t1',title:'자기소개 (2과)',prompt:'이름, 출신, 사는 곳, 직업을 소개하는 글을 4문장 이상 쓰세요.',bank:'Ich heiße … / Ich komme aus … / Ich wohne in … / Ich bin … / Ich studiere …',min:4,checks:[['Ich heiße …','\\bich hei(ß|ss)e\\b'],['Ich komme aus …','\\bich komme aus\\b'],['Ich wohne in …','\\bich wohne in\\b'],['Ich bin … / studiere','\\bich (bin|studiere|arbeite)\\b']],sample:'Guten Tag! Ich heiße Minho Kim. Ich komme aus Korea, aber ich wohne jetzt in München. Ich bin Student. Dort studiere ich.'},
+{id:'t2',title:'가족 소개 (4과)',prompt:'가족(형제자매, 나이, 직업)을 소개하는 글을 4문장 이상 쓰세요.',bank:'Ich habe einen Bruder / eine Schwester / Meine Eltern wohnen … / ist … Jahre alt / Er ist … / Sie ist …',min:4,checks:[['Ich habe einen/eine …','\\bich habe (einen|eine|keine|keinen)\\b'],['Meine/Mein …','\\b(meine|mein|meinen)\\b'],['… Jahre alt','\\bjahre alt\\b'],['Er/Sie ist …','\\b(er|sie) ist\\b']],sample:'Ich habe einen Bruder und eine Schwester. Mein Bruder ist 30 Jahre alt. Er ist Lehrer. Meine Schwester ist siebzehn. Sie ist Schülerin. Meine Eltern wohnen hier in der Nähe.'},
+{id:'t3',title:'방 묘사 (5과)',prompt:'내 방(또는 새 집)을 4문장 이상으로 묘사하세요. 위치 전치사 + 3격을 써 보세요.',bank:'In der Ecke steht … / Neben dem Bett steht … / An der Wand hängt … / Es gibt einen Balkon / Ich möchte … an die Wand stellen',min:4,checks:[['steht / hängt / liegt (위치)','\\b(steht|h(ä|ae|a)ngt|liegt)\\b'],['3격: in der / neben dem / an der / auf dem','\\b(in der|neben dem|an der|auf dem|unter dem|vor dem|hinter dem|über dem)\\b'],['Es gibt …','\\bes gibt\\b'],['Ich möchte … (원형은 문장 끝)','\\bich m(ö|oe|o)chte\\b']],sample:'Das Zimmer ist klein, aber sauber. In der Ecke am Fenster steht ein Bett. Neben dem Bett steht ein Tisch. An der Wand hängt ein Bild. Es gibt auch einen Balkon. Ich möchte ein Regal an die Wand stellen.'},
+{id:'t4',title:'친구와 카페 (3과)',prompt:'친구에게 안부를 묻고 커피와 산책을 제안하는 짧은 대화를 쓰세요.',bank:'Wie geht es dir? / Mir geht es gut / Das Wetter ist schön / Trinken wir einen Kaffee? / Später machen wir einen Spaziergang',min:4,checks:[['Wie geht es dir?','\\bwie geht es dir\\b'],['Mir geht es gut','\\b(mir geht es|es geht mir) gut\\b'],['Das Wetter ist …','\\bdas wetter ist\\b'],['Trinken wir …? / Wir machen …','\\b(trinken wir|nehmen wir|wir machen|machen wir)\\b']],sample:'Hallo, Julia! Wie geht es dir? Mir geht es gut. Heute ist das Wetter sehr schön. Trinken wir einen Kaffee? Später machen wir einen Spaziergang.'}
+];
+/* ===== APP ===== */
+const $=(s,e=document)=>e.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuf=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const ART={m:'der',f:'die',n:'das',p:'die'};
+const tag=a=>`<span class="tag g-${a}">${a}</span>`;
+const nounHtml=n=>`${tag(n.art)}<span class="noun ${n.art}">${esc(n.de)}</span>`;
+
+/* ---- data parse ---- */
+const NOUNS=[];
+{let grp='A';NOUN_RAW.trim().split('\n').forEach(l=>{l=l.trim();if(!l)return;if(l[0]==='#'){grp=l.slice(1);return}
+ const [g,de,ko,pl]=l.split('|');NOUNS.push({id:'n:'+de,kind:'n',g,de,ko,pl,grp,art:ART[g]})})}
+const VERBS=VERB_RAW.trim().split('\n').map(l=>{const [k,ko,t,forms,note]=l.split('|');return{id:'v:'+k,kind:'v',de:k.replace(/\d$/,''),ko,t,forms,note}});
+const OTHERS=OTHER_RAW.trim().split('\n').map(l=>{const [de,ko,note]=l.split('|');return{id:'o:'+de,kind:'o',de,ko,note}});
+const GRAM=GRAM_RAW.trim().split('\n').map((l,i)=>{const [cat,text,ans,wr,why]=l.split('|');return{id:'g'+i,cat,text,ans,wr:wr?wr.split(';'):[],why:why||'',typed:cat==='z'}});
+const BANK=[];
+TRANS_RAW.trim().split('\n').forEach((l,i)=>{const [de,ko]=l.split('|');BANK.push({id:'t'+i,de,ko,src:'u'})});
+DIALOGS.forEach(d=>d.lines.forEach((ln,i)=>{if(ln[1].includes('²'))return;BANK.push({id:'d'+d.id+'_'+i,de:ln[1],ko:ln[2],src:'d',did:d.id})}));
+const QA=QA_RAW.trim().split('\n').map(l=>{const p=l.split('|');return{q:p[0],hint:p[1],sample:p[2],checks:p.slice(3).join('|').split(';').map(c=>{const k=c.indexOf('=');return[c.slice(0,k),new RegExp(c.slice(k+1),'i')]})}});
+TASKS.forEach(t=>t.checks=t.checks.map(c=>[c[0],new RegExp(c[1],'i')]));
+
+/* ---- storage ---- */
+const KEY='ddd-lek25-v1';
+let S={srs:{},days:{},tot:0,ok:0,gw:{},mock:[]};
+try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const pr=id=>S.srs[id]||{b:0,n:0,m:0};
+const dkey=(d=new Date())=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+function rec(id,ok){const r=S.srs[id]||(S.srs[id]={b:0,n:0,m:0});r.n++;if(ok)r.b=Math.min(5,r.b+1);else{r.m++;r.b=0}
+ S.tot++;if(ok)S.ok++;const k=dkey();S.days[k]=(S.days[k]||0)+1;save()}
+const pick=(list,n)=>list.map(x=>({x,k:pr(x.id).b+Math.random()*2.2-(pr(x.id).m?.6:0)})).sort((a,b)=>a.k-b.k).slice(0,n).map(o=>o.x);
+
+/* ---- text helpers ---- */
+const norm=s=>s.replace(/[.,!?;:"“”„]/g,' ').replace(/\s+/g,' ').trim();
+const fold=s=>s.toLowerCase().replace(/ä/g,'a').replace(/ö/g,'o').replace(/ü/g,'u').replace(/ß/g,'ss').replace(/ae/g,'a').replace(/oe/g,'o').replace(/ue/g,'u');
+function wdiff(u,a){const U=u.split(' '),A=a.split(' '),n=U.length,m=A.length;
+ const L=Array.from({length:n+1},()=>Array(m+1).fill(0));
+ for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)L[i][j]=U[i]===A[j]?L[i+1][j+1]+1:Math.max(L[i+1][j],L[i][j+1]);
+ let i=0,j=0;const uo=[],ao=[];
+ while(i<n&&j<m){if(U[i]===A[j]){uo.push(esc(U[i]));ao.push(esc(A[j]));i++;j++}
+  else if(L[i+1][j]>=L[i][j+1]){uo.push(`<mark class="x">${esc(U[i])}</mark>`);i++}
+  else{ao.push(`<mark class="m">${esc(A[j])}</mark>`);j++}}
+ while(i<n)uo.push(`<mark class="x">${esc(U[i++])}</mark>`);
+ while(j<m)ao.push(`<mark class="m">${esc(A[j++])}</mark>`);
+ return[uo.join(' '),ao.join(' ')]}
+function grade(user,answers){const u=norm(user);if(!u)return{r:'bad',best:answers[0],ud:'',ad:esc(norm(answers[0])),note:''};
+ const A=answers.map(norm);
+ if(A.includes(u))return{r:'ok',best:A[0]};
+ const lo=A.find(a=>a.toLowerCase()===u.toLowerCase());
+ if(lo)return{r:'near',best:lo,note:'대문자·소문자를 확인하세요. 독일어 명사와 문장 첫 글자는 대문자입니다.'};
+ const fo=A.find(a=>fold(a)===fold(u));
+ if(fo)return{r:'near',best:fo,note:'ä ö ü ß 철자를 확인하세요.'};
+ let best=A[0],bs=-1;A.forEach(a=>{const s=fold(a).split(' ').filter(w=>fold(u).split(' ').includes(w)).length;if(s>bs){bs=s;best=a}});
+ const [ud,ad]=wdiff(u,best);return{r:'bad',best,ud,ad,note:''}}
+function say(t){try{const u=new SpeechSynthesisUtterance(t);u.lang='de-DE';u.rate=.9;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+const spk=t=>`<button class="ico ghost" data-a="say" data-t="${esc(t)}" aria-label="발음 듣기">▶ 듣기</button>`;
+const specBar=()=>`<div class="spec" aria-label="특수문자">${['ä','ö','ü','ß','Ä','Ö','Ü'].map(c=>`<button data-a="ins" data-v="${c}" type="button">${c}</button>`).join('')}</div>`;
+function tipFor(n){if(TIPS[n.de])return TIPS[n.de];const r=ruleFor(n);
+ if(!r)return'규칙이 없는 단어예요. 관사와 함께 통째로 외우세요: '+n.art+' '+n.de;
+ return r.g===n.g?r.t:`⚠ 예외! (${r.t}) 이지만 이 단어는 ${n.art} ${n.de}`}
+
+let tab='home',timers=[];
+const autoNext=(Q,get,fn,ms)=>{const i=Q.i;later(()=>{if(get()===Q&&Q.i===i&&!Q.done)fn()},ms)};
+const clearTimers=()=>{timers.forEach(t=>{clearTimeout(t);clearInterval(t)});timers=[]};
+const later=(f,ms)=>{const t=setTimeout(f,ms);timers.push(t);return t};
+const ACT={};
+
+/* ===== HOME ===== */
+let HOME={confirm:false};
+function streak(){let n=0;const d=new Date();if(!S.days[dkey(d)])d.setDate(d.getDate()-1);while(S.days[dkey(d)]){n++;d.setDate(d.getDate()-1)}return n}
+function vHome(){
+ const mast=NOUNS.filter(n=>pr(n.id).b>=4).length,seen=NOUNS.filter(n=>pr(n.id).n>0).length;
+ const weak=NOUNS.filter(n=>pr(n.id).m>0&&pr(n.id).b<4).sort((a,b)=>pr(b.id).m-pr(a.id).m).slice(0,10);
+ const acc=S.tot?Math.round(S.ok/S.tot*100)+'%':'–';
+ const next=seen<10?['genus','성별 퀴즈부터 시작해 보세요. 명사 100여 개를 der / die / das로 분류합니다.']
+  :weak.length>=3?['genus','틀린 명사가 쌓였어요. 약점 단어만 모아서 복습하세요.']
+  :['mock','기본기가 잡혔다면 모의고사로 실전 감각을 확인하세요.'];
+ return`<h2>시험 범위 한눈에</h2>
+ <p class="muted">업로드한 자료(Dialog 2–5과, Übung Lektion 2–5, 단어장 4세트, 교재 45–47쪽 정답)에서 뽑은 명사 ${NOUNS.length}개, 동사 ${VERBS.length}개, 기타 단어 ${OTHERS.length}개, 문법 문제 ${GRAM.length}개, 번역 작문 ${BANK.length}문장이 들어 있어요.</p>
+ <div class="grid" style="margin:14px 0">
+  <div class="stat"><b>${mast}<small style="font-size:14px;font-weight:500;color:var(--muted)"> / ${NOUNS.length}</small></b><span>성별 확실히 외운 명사</span></div>
+  <div class="stat"><b>${acc}</b><span>전체 정답률 (${S.tot}문제)</span></div>
+  <div class="stat"><b>${S.days[dkey()]||0}</b><span>오늘 푼 문제</span></div>
+  <div class="stat"><b>${streak()}일</b><span>연속 학습</span></div>
+ </div>
+ <div class="card"><div class="spread"><div><b>오늘의 추천</b><div class="muted">${next[1]}</div></div><button class="pri" data-a="go" data-v="${next[0]}">바로 가기</button></div></div>
+ ${weak.length?`<div class="card"><div class="spread"><b>자주 틀리는 명사</b><button data-a="weakstart">약점만 복습</button></div>
+ <div class="row" style="margin-top:10px">${weak.map(n=>`<span title="${esc(n.ko)}">${nounHtml(n)}</span>`).join('<span style="width:8px"></span>')}</div></div>`:''}
+ <h3>빠른 시작</h3>
+ <div class="grid">
+  <button class="card" style="text-align:left;margin:0" data-a="quick" data-v="genus"><b>성별 10문제</b><div class="muted small">der / die / das 고르기</div></button>
+  <button class="card" style="text-align:left;margin:0" data-a="quick" data-v="grammar"><b>문법 10문제</b><div class="muted small">동사·격·전치사 빈칸</div></button>
+  <button class="card" style="text-align:left;margin:0" data-a="quick" data-v="write"><b>번역 작문 10문장</b><div class="muted small">한국어 → 독일어</div></button>
+  <button class="card" style="text-align:left;margin:0" data-a="go" data-v="mock"><b>모의고사 20문항</b><div class="muted small">성별 + 문법 + 작문</div></button>
+ </div>
+ ${S.mock.length?`<h3>모의고사 기록</h3><p class="small muted">${S.mock.slice(-6).map(m=>`${m.d.slice(5)} ${m.s}/20`).join(' · ')}</p>`:''}
+ <div class="sec small muted">학습 기록은 이 브라우저에만 저장됩니다. ${HOME.confirm?`<button data-a="reset2" class="chip" style="color:var(--bad)">정말 지우기</button> <button class="chip" data-a="reset0">취소</button>`:`<button class="chip ghost" data-a="reset1">기록 초기화</button>`}</div>`}
+ACT.reset1=()=>{HOME.confirm=true;render()};ACT.reset0=()=>{HOME.confirm=false;render()};
+ACT.reset2=()=>{S={srs:{},days:{},tot:0,ok:0,gw:{},mock:[]};save();HOME.confirm=false;render()};
+ACT.go=el=>go(el.dataset.v);
+ACT.say=el=>say(el.dataset.t);
+ACT.quick=el=>{const v=el.dataset.v;go(v);if(v==='genus'){GS.mode='quiz';GS.filt='all';ACT.gstart()}
+ if(v==='grammar'){GM.sub='quiz';GM.cat='all';ACT.qstart()}if(v==='write'){W.sub='tr';W.src='all';ACT.wstart()}};
+ACT.weakstart=()=>{go('genus');GS.mode='quiz';GS.filt='weak';ACT.gstart()};
+
+/* ===== 성별 ===== */
+let GS={mode:'quiz',filt:'all',Q:null,msg:''};
+const FILTS=[['all','전체'],['A','Lektion 2–4'],['B','Lektion 5 집·방'],['X','연습문제 속'],['weak','약점만']];
+const gPool=()=>{const f=GS.filt;let p=NOUNS;if(f==='A'||f==='B'||f==='X')p=NOUNS.filter(n=>n.grp===f);else if(f==='weak')p=NOUNS.filter(n=>pr(n.id).m>0&&pr(n.id).b<4);
+ return GS.mode==='plural'?p.filter(n=>n.pl!=='—'):p};
+function vGenus(){
+ const modes=[['quiz','10문제'],['sprint','60초 스프린트'],['plural','복수형 쓰기'],['rules','성별 규칙']];
+ const head=`<h2>명사 성별 훈련</h2><p class="muted">명사는 관사와 한 덩어리로 외우는 게 원칙이에요. 색으로 기억하세요: <span class="tag g-der">der</span> 남성 <span class="tag g-die">die</span> 여성·복수 <span class="tag g-das">das</span> 중성</p>
+ <div class="seg" role="group" aria-label="모드">${modes.map(m=>`<button class="${GS.mode===m[0]?'on':''}" data-a="gmode" data-v="${m[0]}">${m[1]}</button>`).join('')}</div>`;
+ if(GS.mode==='rules')return head+vRules();
+ const Q=GS.Q;
+ if(!Q){const pool=gPool();
+  return head+`<div class="card"><b>범위</b><div class="row" style="margin:8px 0">${FILTS.map(f=>{const c=f[0]==='weak'?NOUNS.filter(n=>pr(n.id).m>0&&pr(n.id).b<4).length:f[0]==='all'?NOUNS.length:NOUNS.filter(n=>n.grp===f[0]).length;return`<button class="chip ${GS.filt===f[0]?'on':''}" data-a="gfilt" data-v="${f[0]}">${f[1]} ${c}</button>`}).join('')}</div>
+  <p class="small muted">${GS.mode==='quiz'?'아직 덜 외운 단어가 먼저 나옵니다. 키보드: 1·2·3 또는 m·f·n.':GS.mode==='sprint'?'60초 안에 최대한 많이 맞히세요. 틀려도 바로 다음 단어로 넘어가요.':'단수형을 보고 복수형을 쓰세요. ä ö ü 입력 버튼이 있어요. 복수형이 없는 명사는 제외됩니다.'}</p>
+  ${GS.msg?`<p class="fb bad">${GS.msg}</p>`:''}
+  <button class="pri" data-a="gstart" ${pool.length?'':'disabled'}>시작 (${pool.length}개 중)</button></div>
+  <h3>그룹별 진행</h3>${Object.keys(GRP).map(k=>{const L=NOUNS.filter(n=>n.grp===k),m=L.filter(n=>pr(n.id).b>=4).length;return`<div class="small" style="margin:8px 0 3px">${GRP[k]} <span class="muted">${m}/${L.length}</span></div><div class="bar"><i style="width:${m/L.length*100}%"></i></div>`}).join('')}`}
+ if(Q.done)return head+gDone();
+ return head+gCard()}
+ACT.gmode=el=>{clearTimers();GS.mode=el.dataset.v;GS.Q=null;GS.msg='';render()};
+ACT.gfilt=el=>{GS.filt=el.dataset.v;GS.msg='';render()};
+ACT.gstart=()=>{clearTimers();const pool=gPool();
+ if(!pool.length){GS.msg='약점 단어가 아직 없어요. 먼저 퀴즈를 풀어 보세요.';render();return}
+ const Q={mode:GS.mode,i:0,ok:0,ans:null,wrong:[],done:false,left:60};
+ Q.items=GS.mode==='sprint'?shuf(pool).concat(shuf(pool)):pick(pool,10);
+ GS.Q=Q;GS.msg='';
+ if(Q.mode==='sprint'){timers.push(setInterval(()=>{Q.left--;const t=$('#tm');if(t)t.textContent=Q.left;const b=$('#tb');if(b)b.style.width=Q.left/60*100+'%';if(Q.left<=0){clearTimers();Q.done=true;render()}},1000))}
+ render()};
+function gCard(){const Q=GS.Q,it=Q.items[Q.i],a=Q.ans;
+ const prog=Q.mode==='sprint'?`<div class="spread small"><span>맞힌 수 <b>${Q.ok}</b></span><span><b id="tm">${Q.left}</b>초</span></div><div class="bar"><i id="tb" style="width:${Q.left/60*100}%"></i></div>`
+  :`<div class="spread small"><span>${Q.i+1} / ${Q.items.length}</span><span class="muted">${esc(GRP[it.grp])}</span></div><div class="bar"><i style="width:${Q.i/Q.items.length*100}%"></i></div>`;
+ if(Q.mode==='plural'){
+  const fb=a?(a.r==='bad'?`<div class="fb bad"><b class="t">오답</b><div>내 답: ${a.ud||'<span class="muted">(비움)</span>'}</div><div>정답: <b>${a.ad}</b></div></div>`
+   :`<div class="fb ${a.r==='ok'?'ok':'near'}"><b>${a.r==='ok'?'정답!':'거의 맞아요'}</b> die ${esc(a.best)} ${a.note?'<div class="tip">'+a.note+'</div>':''}</div>`):'';
+  return`<div class="card">${prog}<div class="word">${nounHtml(it)}</div><div class="wko">${esc(it.ko)} · 복수형은?</div>
+  <div class="row" style="flex-wrap:nowrap"><input type="text" id="pin" data-enter="${a?'gnext':'psub'}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="die …" ${a?'disabled value="'+esc($('#pin')?.value||'')+'"':''}>
+  ${a?`<button class="pri" data-a="gnext">다음</button>`:`<button class="pri" data-a="psub">확인</button>`}</div>${a?'':specBar()}${fb}</div>`}
+ const btn=['der','die','das'].map((v,i)=>`<button class="gb ${v} ${a?(v===it.art?'right':v===a?'wrong':''):''}" data-a="gans" data-v="${v}" ${a?'disabled':''}>${v}<kbd>${i+1}</kbd></button>`).join('');
+ let fb='';if(a){const ok=a===it.art;
+  fb=ok?`<div class="fb ok"><b>정답!</b> ${nounHtml(it)} <span class="muted">복수 ${it.pl==='—'?'없음':'die '+esc(it.pl)}</span></div>`
+   :`<div class="fb bad"><b class="t">오답</b> 정답은 ${nounHtml(it)} <span class="muted">복수 ${it.pl==='—'?'없음':'die '+esc(it.pl)}</span><div class="tip">${esc(tipFor(it))}</div></div>`}
+ return`<div class="card">${prog}<div class="word">${esc(it.de)}</div><div class="wko">${esc(it.ko)} ${spk(it.art+' '+it.de)}</div>
+ <div class="gbtns">${btn}</div>${fb}${a&&!(a===it.art)&&Q.mode==='quiz'?`<div style="margin-top:12px;text-align:right"><button class="pri" data-a="gnext">다음 (Enter)</button></div>`:''}</div>`}
+function answerG(v){const Q=GS.Q;if(!Q||Q.ans!=null||Q.done)return;const it=Q.items[Q.i];const ok=v===it.art;rec(it.id,ok);Q.ans=v;if(ok)Q.ok++;else Q.wrong.push(it);render();
+ if(ok)autoNext(Q,()=>GS.Q,ACT.gnext,Q.mode==='sprint'?350:700);else if(Q.mode==='sprint')autoNext(Q,()=>GS.Q,ACT.gnext,1100)}
+ACT.gans=el=>answerG(el.dataset.v);
+ACT.psub=()=>{const Q=GS.Q;if(Q.ans!=null)return;const it=Q.items[Q.i],val=$('#pin').value;
+ const alts=it.pl.split('/').flatMap(p=>[p,'die '+p]);const r=grade(val,alts);
+ if(r.r!=='bad'&&norm(val).toLowerCase().startsWith('die '))r.best=r.best.replace(/^die /,'');
+ Q.ans=r;rec('pl:'+it.de,r.r!=='bad');if(r.r!=='bad')Q.ok++;else Q.wrong.push(it);
+ if(r.r==='bad'){r.ad=esc(it.pl.split('/').map(p=>'die '+p).join(' / '))}
+ render();const i=$('#pin');if(i){i.value=val;i.disabled=true}};
+ACT.gnext=()=>{const Q=GS.Q;if(!Q||Q.done)return;clearTimeout(Q.tm);Q.i++;Q.ans=null;if(Q.i>=Q.items.length){clearTimers();Q.done=true}render();const p=$('#pin');if(p)p.focus()};
+function gDone(){const Q=GS.Q,n=Q.mode==='sprint'?Q.i+(Q.ans!=null?1:0):Q.items.length;
+ return`<div class="card"><h3 style="margin-top:0">${Q.mode==='sprint'?'시간 종료!':'결과'}</h3>
+ <div class="word" style="margin:4px 0">${Q.ok} <span class="muted" style="font-size:.5em">/ ${n}</span></div>
+ ${Q.wrong.length?`<h3>틀린 단어</h3><div class="scroll"><table class="tbl"><tbody>${[...new Map(Q.wrong.map(w=>[w.id,w])).values()].map(w=>`<tr><td>${nounHtml(w)}</td><td>${esc(w.ko)}</td><td class="small muted">${esc(tipFor(w))}</td></tr>`).join('')}</tbody></table></div>`:'<p>모두 맞혔어요!</p>'}
+ <div class="row" style="margin-top:12px"><button class="pri" data-a="gstart">다시 하기</button>${Q.wrong.length&&Q.mode!=='sprint'?`<button data-a="gretry">틀린 것만 다시</button>`:''}<button data-a="gback">설정으로</button></div></div>`}
+ACT.gretry=()=>{const Q=GS.Q;const items=shuf([...new Map(Q.wrong.map(w=>[w.id,w])).values()]);GS.Q={mode:Q.mode,i:0,ok:0,ans:null,wrong:[],done:false,left:60,items};render()};
+ACT.gback=()=>{clearTimers();GS.Q=null;render()};
+
+function vRules(){
+ const by={};NOUNS.forEach(n=>{const r=ruleFor(n);const k=r?r.id:'none';(by[k]=by[k]||[]).push(n)});
+ const chip=(n,ex)=>`<span style="display:inline-block;margin:3px 10px 3px 0;${ex?'border-bottom:2px dashed var(--bad)':''}" title="${esc(n.ko)}">${nounHtml(n)}</span>`;
+ const groups=[['ung','-ung / -heit / -keit / -schaft'],['in','-in'],['chen','-chen / -lein'],['ist','-ist / -ent / -ant / -ekt'],['ie','-ie'],['er','-er / -el'],['e','-e'],['o','-o / -é']];
+ return`<p class="muted" style="margin-top:12px">어미로 성별을 추측하는 규칙과, 이 단어장 안의 예외입니다. <span style="border-bottom:2px dashed var(--bad)">점선 밑줄</span>은 예외예요.</p>`+groups.map(([id,label])=>{const r=RULES.find(x=>x.id===id),L=by[id]||[];if(!L.length)return'';
+  const ok=L.filter(n=>n.g===r.g),ex=L.filter(n=>n.g!==r.g);
+  return`<div class="card"><div class="spread"><b>${label}</b><span class="tag g-${ART[r.g]}">→ ${ART[r.g]}</span></div><div class="small muted">${esc(r.t)}</div>
+  <div style="margin-top:8px">${ok.map(n=>chip(n)).join('')}${ex.map(n=>chip(n,1)).join('')}</div></div>`}).join('')+
+ `<div class="card"><b>범주로 외우기</b><table class="tbl" style="margin-top:6px"><tbody>
+ <tr><td><b>가구</b></td><td><span class="der">der</span> Tisch, Stuhl, Schrank, Teppich, Boden · <span class="das">das</span> Bett, Regal, Sofa · <span class="die">die</span> Lampe, Tür, Wand</td></tr>
+ <tr><td><b>의류</b></td><td><span class="der">der</span> Rock, Mantel, Rucksack · <span class="das">das</span> Hemd · <span class="die">die</span> Jacke, Bluse, Mütze, Socke, Brille, Tasche</td></tr>
+ <tr><td><b>가족</b></td><td><span class="der">der</span> Vater, Bruder, Onkel, Enkel · <span class="die">die</span> Mutter, Schwester, Tante · <span class="das">das</span> Kind</td></tr>
+ <tr><td><b>음료</b></td><td><span class="der">der</span> Kaffee, Tee</td></tr>
+ <tr><td><b>방</b></td><td><span class="das">das</span> Zimmer, Badezimmer, Fenster · <span class="die">die</span> Küche, Ecke, Decke · <span class="der">der</span> Balkon</td></tr>
+ <tr><td><b>합성어</b></td><td>마지막 단어를 따름: das Zimmer → <span class="das">das</span> Arbeitszimmer / der Name → <span class="der">der</span> Vorname / das Buch → <span class="das">das</span> Wörterbuch</td></tr>
+ <tr><td><b>복수 전용</b></td><td><span class="die">die</span> Eltern, <span class="die">die</span> Großeltern (die Geschwister도 복수로 자주 씀)</td></tr>
+ </tbody></table></div>
+ <div class="card"><b>교재 오타 정정</b><div class="small muted" style="margin-top:4px">hwp 단어장의 <i>das Platz → der Platz</i>, <i>das Jahre → das Jahr</i>, <i>regalmäßig → regelmäßig</i>, 대화문의 <i>bescuche → besuche</i>, <i>trifft dem Vermieter → trifft den Vermieter</i> 는 오타로 보고 고쳐서 반영했어요. 시험지 표기와 다르면 선생님 표기를 따르세요.</div></div>`}
+
+/* ===== 단어 ===== */
+let V={set:'n',dir:'de',sub:'card',hide:false,Q:null,q:'',lf:'all',T:null};
+const vset=()=>V.set==='n'?NOUNS:V.set==='v'?VERBS:V.set==='o'?OTHERS:[...NOUNS,...VERBS,...OTHERS];
+const kindLabel=it=>it.kind==='n'?'명사':it.kind==='v'?'동사':'기타';
+function backHtml(it){
+ if(it.kind==='n')return`<div class="big">${nounHtml(it)}</div><div>${esc(it.ko)}</div><div class="small muted">복수 ${it.pl==='—'?'없음':'die '+esc(it.pl)}</div><div class="small" style="max-width:34em">${esc(tipFor(it))}</div>`;
+ if(it.kind==='v')return`<div class="big">${esc(it.de)}</div><div>${esc(it.ko)} <span class="pill">${it.t}</span></div><div class="small muted">${esc(it.forms)}</div>${it.note?`<div class="small">${esc(it.note)}</div>`:''}`;
+ return`<div class="big">${esc(it.de)}</div><div>${esc(it.ko)}</div><div class="small muted">${esc(it.note||'')}</div>`}
+function frontHtml(it){
+ if(V.dir==='ko')return`<div class="pill">${kindLabel(it)}</div><div class="big" style="font-family:var(--f-body);font-weight:700">${esc(it.ko)}</div>`;
+ if(it.kind==='n')return`<div class="big">${V.hide?'<span class="tag" style="background:var(--soft);color:var(--muted)">?</span>':tag(it.art)}<span class="noun">${esc(it.de)}</span></div><div class="small muted">${V.hide?'관사를 떠올려 보세요':''}</div>`;
+ return`<div class="big">${esc(it.de)}</div>`}
+function vVocab(){
+ const sets=[['n','명사'],['v','동사'],['o','기타'],['a','전체']];
+ const head=`<h2>단어 암기</h2><div class="row" style="margin-bottom:8px">
+ <div class="seg">${[['card','카드'],['list','목록·검색'],['type','쓰기']].map(s=>`<button class="${V.sub===s[0]?'on':''}" data-a="vsub" data-v="${s[0]}">${s[1]}</button>`).join('')}</div>
+ <div class="seg">${sets.map(s=>`<button class="${V.set===s[0]?'on':''}" data-a="vset" data-v="${s[0]}">${s[1]}</button>`).join('')}</div></div>`;
+ if(V.sub==='list')return head+vList();
+ if(!V.Q)return head+`<div class="card"><div class="row" style="margin-bottom:10px">${V.sub==='card'?`<div class="seg"><button class="${V.dir==='de'?'on':''}" data-a="vdir" data-v="de">독일어 → 한국어</button><button class="${V.dir==='ko'?'on':''}" data-a="vdir" data-v="ko">한국어 → 독일어</button></div>
+  ${V.set==='n'||V.set==='a'?`<label class="small"><input type="checkbox" id="vh" data-a="vhide" ${V.hide?'checked':''}> 관사 숨기기</label>`:''}`:`<p class="small muted" style="margin:0">한국어 뜻을 보고 독일어를 쓰세요. 명사는 <b>관사까지</b> 써야 정답이에요 (예: der Lehrer).</p>`}</div>
+  <button class="pri" data-a="vstart">${V.sub==='card'?'카드 15장 시작':'10문제 시작'} (${vset().length}개 중)</button></div>`;
+ const Q=V.Q;if(Q.done)return head+`<div class="card"><h3 style="margin-top:0">끝!</h3><div class="word" style="margin:4px 0">${Q.ok} <span class="muted" style="font-size:.5em">/ ${Q.items.length}</span></div>
+  ${Q.wrong.length?`<h3>다시 볼 단어</h3><table class="tbl"><tbody>${Q.wrong.map(w=>`<tr><td>${w.kind==='n'?nounHtml(w):esc(w.de)}</td><td>${esc(w.ko)}</td></tr>`).join('')}</tbody></table>`:''}
+  <div class="row" style="margin-top:12px"><button class="pri" data-a="vstart">한 번 더</button><button data-a="vback">설정으로</button></div></div>`;
+ const it=Q.items[Q.i];
+ if(V.sub==='card')return head+`<div class="spread small" style="margin-bottom:6px"><span>${Q.i+1} / ${Q.items.length}</span>${spk((it.art?it.art+' ':'')+it.de)}</div><div class="bar"><i style="width:${Q.i/Q.items.length*100}%"></i></div>
+  <div class="card flash" data-a="flip" role="button" tabindex="0">${Q.flip?backHtml(it):frontHtml(it)}${Q.flip?'':'<div class="small muted" style="margin-top:12px">카드를 눌러 뒤집기</div>'}</div>
+  ${Q.flip?`<div class="row" style="justify-content:center"><button data-a="vknow" data-v="0" style="min-width:130px">아직 몰라요</button><button class="pri" data-a="vknow" data-v="1" style="min-width:130px">알아요</button></div>`:''}`;
+ const a=Q.ans;
+ return head+`<div class="spread small" style="margin-bottom:6px"><span>${Q.i+1} / ${Q.items.length}</span><span class="pill">${kindLabel(it)}</span></div><div class="bar"><i style="width:${Q.i/Q.items.length*100}%"></i></div>
+ <div class="card"><div class="word" style="font-family:var(--f-body);font-size:clamp(26px,7vw,38px)">${esc(it.ko)}</div><div class="wko">${it.kind==='v'?'동사 원형으로':it.kind==='n'?'관사 + 명사':''}</div>
+ <div class="row" style="flex-wrap:nowrap"><input type="text" id="tin" data-enter="${a?'vnext':'vcheck'}" autocomplete="off" autocapitalize="off" spellcheck="false" ${a?'disabled':''}>
+ ${a?`<button class="pri" data-a="vnext">다음</button>`:`<button class="pri" data-a="vcheck">확인</button>`}</div>${a?'':specBar()}
+ ${a?(a.r==='bad'?`<div class="fb bad"><b class="t">오답</b><div>내 답: ${a.ud||'(비움)'}</div><div>정답: <b>${a.ad}</b></div>${a.hint?`<div class="tip">${a.hint}</div>`:''}</div>`:`<div class="fb ${a.r==='ok'?'ok':'near'}"><b>${a.r==='ok'?'정답!':'거의 맞아요'}</b> ${esc(a.best)}${a.note?`<div class="tip">${a.note}</div>`:''}</div>`):''}</div>`}
+ACT.vsub=el=>{V.sub=el.dataset.v;V.Q=null;render()};ACT.vset=el=>{V.set=el.dataset.v;V.Q=null;render()};ACT.vdir=el=>{V.dir=el.dataset.v;render()};
+ACT.vhide=el=>{V.hide=el.checked};ACT.vback=()=>{V.Q=null;render()};
+ACT.vstart=()=>{const n=V.sub==='card'?15:10;V.Q={items:pick(vset().filter(x=>V.sub==='card'||!x.de.includes('…')),n),i:0,ok:0,wrong:[],flip:false,ans:null,done:false};render();const t=$('#tin');if(t)t.focus()};
+ACT.flip=()=>{V.Q.flip=true;render()};
+ACT.vknow=el=>{const Q=V.Q,it=Q.items[Q.i],ok=el.dataset.v==='1';rec(it.id,ok);if(ok)Q.ok++;else Q.wrong.push(it);Q.i++;Q.flip=false;if(Q.i>=Q.items.length)Q.done=true;render()};
+ACT.vcheck=()=>{const Q=V.Q,it=Q.items[Q.i],val=$('#tin').value;
+ const exp=it.kind==='n'?it.art+' '+it.de:it.de;const r=grade(val,[exp]);
+ if(r.r==='bad'&&it.kind==='n'&&fold(norm(val))===fold(it.de)){r.hint='명사는 관사까지 써야 해요. 이 단어는 '+it.art+' '+it.de+'.'}
+ if(r.r==='bad'&&it.kind==='n'){const w=norm(val).split(' ');if(w.length===2&&fold(w[1])===fold(it.de)&&w[0]!==it.art)r.hint='단어는 맞았지만 성이 틀렸어요: '+tipFor(it)}
+ Q.ans=r;rec(it.id,r.r!=='bad');if(r.r!=='bad')Q.ok++;else Q.wrong.push(it);render();const t=$('#tin');t.value=val;t.disabled=true};
+ACT.vnext=()=>{const Q=V.Q;Q.i++;Q.ans=null;if(Q.i>=Q.items.length)Q.done=true;render();const t=$('#tin');if(t)t.focus()};
+function listRows(){const q=fold(V.q.trim()),f=V.lf;
+ let L=[...NOUNS,...VERBS,...OTHERS].filter(it=>V.set==='a'||it.kind===V.set);
+ if(f==='der'||f==='die'||f==='das')L=L.filter(it=>it.kind==='n'&&it.art===f);
+ if(q)L=L.filter(it=>fold(it.de).includes(q)||it.ko.includes(V.q.trim()));
+ return L.map(it=>it.kind==='n'?`<tr><td style="white-space:nowrap">${nounHtml(it)}</td><td>${esc(it.ko)}</td><td class="small muted">${it.pl==='—'?'–':esc(it.pl)}</td></tr>`
+  :it.kind==='v'?`<tr><td class="noun">${esc(it.de)}</td><td>${esc(it.ko)} <span class="pill">${it.t}</span></td><td class="small muted">${esc(it.forms)}${it.note?' · '+esc(it.note):''}</td></tr>`
+  :`<tr><td class="noun">${esc(it.de)}</td><td>${esc(it.ko)}</td><td class="small muted">${esc(it.note)}</td></tr>`).join('')||'<tr><td colspan="3" class="muted">검색 결과가 없어요.</td></tr>'}
+function vList(){return`<div class="card"><input type="text" id="vq" placeholder="독일어 또는 한국어로 검색" value="${esc(V.q)}" autocomplete="off">
+ ${V.set==='n'||V.set==='a'?`<div class="row" style="margin-top:8px">${['all','der','die','das'].map(f=>`<button class="chip ${V.lf===f?'on':''}" data-a="vlf" data-v="${f}">${f==='all'?'전체':f}</button>`).join('')}</div>`:''}
+ <div class="scroll" style="margin-top:8px"><table class="tbl"><thead><tr><th>단어</th><th>뜻</th><th>복수·활용·비고</th></tr></thead><tbody id="vl">${listRows()}</tbody></table></div></div>`}
+ACT.vlf=el=>{V.lf=el.dataset.v;render()};
+
+/* ===== 문법 ===== */
+let GM={sub:'quiz',cat:'all',Q:null};
+function vGrammar(){
+ const head=`<h2>문법</h2><div class="seg" style="margin-bottom:10px">${[['quiz','빈칸 퀴즈'],['sum','요약 노트']].map(s=>`<button class="${GM.sub===s[0]?'on':''}" data-a="gsub" data-v="${s[0]}">${s[1]}</button>`).join('')}</div>`;
+ if(GM.sub==='sum')return head+vSummary();
+ const Q=GM.Q;
+ if(!Q){const wn=Object.keys(S.gw).length;
+  return head+`<div class="card"><b>유형 선택</b><div class="row" style="margin:8px 0">
+  <button class="chip ${GM.cat==='all'?'on':''}" data-a="gcat" data-v="all">전체 섞기</button>
+  ${Object.entries(GRAM_CATS).map(([k,v])=>`<button class="chip ${GM.cat===k?'on':''}" data-a="gcat" data-v="${k}">${v} ${GRAM.filter(g=>g.cat===k).length}</button>`).join('')}
+  <button class="chip ${GM.cat==='wrong'?'on':''}" data-a="gcat" data-v="wrong">틀린 문제 ${wn}</button></div>
+  <p class="small muted">한 번에 10문제씩 나옵니다. 오답은 해설과 함께 기록되어 나중에 모아서 풀 수 있어요.</p><button class="pri" data-a="qstart">시작</button></div>`}
+ if(Q.done)return head+`<div class="card"><h3 style="margin-top:0">결과</h3><div class="word" style="margin:4px 0">${Q.ok} <span class="muted" style="font-size:.5em">/ ${Q.items.length}</span></div>
+  ${Q.wrong.length?`<h3>틀린 문제</h3>${Q.wrong.map(w=>`<div style="margin:8px 0"><div>${esc(w.text).replace('___','<b>___</b>')}</div><div class="small"><b class="das">${esc(w.ans)}</b> <span class="muted">${esc(w.why)}</span></div></div>`).join('')}`:'<p>모두 맞혔어요!</p>'}
+  <div class="row" style="margin-top:12px"><button class="pri" data-a="qstart">다시 하기</button><button data-a="qback">유형 선택으로</button></div></div>`;
+ const it=Q.items[Q.i],a=Q.ans;
+ const qtext=esc(it.text).replace('___','<u>&nbsp;</u>');
+ const opts=it.typed?`<div class="row" style="flex-wrap:nowrap"><input type="text" id="gin" data-enter="${a?'qnext':'qcheck'}" autocomplete="off" autocapitalize="off" ${a?'disabled':''}>${a?'<button class="pri" data-a="qnext">다음</button>':'<button class="pri" data-a="qcheck">확인</button>'}</div>${a?'':specBar()}`
+  :it.opts.map((o,i)=>`<button class="opt ${a!=null?(o===it.ans?'right':(i===a.i?'wrong':'')):''}" data-a="qans" data-v="${i}" ${a!=null?'disabled':''}>${esc(o)}</button>`).join('');
+ let fb='';if(a){fb=a.ok?`<div class="fb ok"><b>정답!</b> <span class="tip" style="color:var(--ink)">${esc(it.why)}</span></div>`
+  :`<div class="fb bad"><b class="t">오답</b> 정답: <b>${esc(it.ans)}</b><div class="tip">${esc(it.why)}</div>${a.ud?`<div class="tip">내 답: ${a.ud}</div>`:''}</div>`}
+ return head+`<div class="spread small"><span>${Q.i+1} / ${Q.items.length}</span><span class="pill">${GRAM_CATS[it.cat]}</span></div><div class="bar"><i style="width:${Q.i/Q.items.length*100}%"></i></div>
+ <div class="card"><div class="q">${qtext}</div>${opts}${fb}${a&&!a.ok?`<div style="margin-top:12px;text-align:right"><button class="pri" data-a="qnext">다음 (Enter)</button></div>`:''}</div>`}
+ACT.gsub=el=>{GM.sub=el.dataset.v;GM.Q=null;render()};ACT.gcat=el=>{GM.cat=el.dataset.v;render()};ACT.qback=()=>{GM.Q=null;render()};
+ACT.qstart=()=>{clearTimers();let L=GM.cat==='all'?GRAM:GM.cat==='wrong'?GRAM.filter(g=>S.gw[g.id]):GRAM.filter(g=>g.cat===GM.cat);
+ if(!L.length){L=GRAM}
+ const items=shuf(L).slice(0,10).map(g=>({...g,opts:g.typed?[]:shuf([g.ans,...g.wr])}));
+ GM.Q={items,i:0,ok:0,wrong:[],ans:null,done:false};render()};
+function qfinish(it,ok){const Q=GM.Q;if(ok){Q.ok++;delete S.gw[it.id]}else{Q.wrong.push(it);S.gw[it.id]=1}rec(it.id,ok)}
+ACT.qans=el=>{const Q=GM.Q;if(Q.ans)return;const it=Q.items[Q.i],i=+el.dataset.v,ok=it.opts[i]===it.ans;Q.ans={ok,i};qfinish(it,ok);render();if(ok)autoNext(Q,()=>GM.Q,ACT.qnext,900)};
+ACT.qcheck=()=>{const Q=GM.Q;if(Q.ans)return;const it=Q.items[Q.i],val=$('#gin').value,r=grade(val,[it.ans]);const ok=r.r!=='bad';
+ Q.ans={ok,ud:r.ud};qfinish(it,ok);render();const g=$('#gin');g.value=val;g.disabled=true;if(ok)autoNext(Q,()=>GM.Q,ACT.qnext,1000)};
+ACT.qnext=()=>{const Q=GM.Q;if(!Q||Q.done)return;clearTimers();Q.i++;Q.ans=null;if(Q.i>=Q.items.length)Q.done=true;render();const g=$('#gin');if(g)g.focus()};
+function vSummary(){return`
+<div class="card"><b>정관사 격변화</b><div class="scroll"><table class="tbl"><thead><tr><th></th><th class="der">남성</th><th class="die">여성</th><th class="das">중성</th><th>복수</th></tr></thead><tbody>
+<tr><td>1격</td><td>der</td><td>die</td><td>das</td><td>die</td></tr><tr><td>4격</td><td><b>den</b></td><td>die</td><td>das</td><td>die</td></tr>
+<tr><td>3격</td><td><b>dem</b></td><td><b>der</b></td><td><b>dem</b></td><td><b>den</b>(+n)</td></tr><tr><td>2격</td><td>des(+s)</td><td>der</td><td>des(+s)</td><td>der</td></tr></tbody></table></div></div>
+<div class="card"><b>ein- / kein- / mein- 격변화</b><div class="scroll"><table class="tbl"><thead><tr><th></th><th>남성</th><th>여성</th><th>중성</th><th>복수</th></tr></thead><tbody>
+<tr><td>1격</td><td>ein / kein / mein</td><td>eine</td><td>ein</td><td>– / keine / meine</td></tr>
+<tr><td>4격</td><td><b>einen</b> / keinen / meinen</td><td>eine</td><td>ein</td><td>– / keine / meine</td></tr>
+<tr><td>3격</td><td>einem</td><td>einer</td><td>einem</td><td>– / keinen / meinen</td></tr>
+<tr><td>2격</td><td>eines(+s)</td><td>einer</td><td>eines(+s)</td><td>– / keiner / meiner</td></tr></tbody></table></div>
+<p class="small muted">소유관사는 같은 어미: mein, dein, sein(그의), ihr(그녀의·그들의), unser, euer, Ihr(당신의). 예: der Bruder meines Vaters (2격), das Auto meiner Mutter (2격 여성).</p></div>
+<div class="card"><b>인칭대명사</b><div class="scroll"><table class="tbl"><thead><tr><th>1격</th><th>4격</th><th>3격</th></tr></thead><tbody>
+<tr><td>ich</td><td>mich</td><td>mir</td></tr><tr><td>du</td><td>dich</td><td>dir</td></tr><tr><td>er / es</td><td>ihn / es</td><td>ihm</td></tr><tr><td>sie</td><td>sie</td><td>ihr</td></tr>
+<tr><td>wir</td><td>uns</td><td>uns</td></tr><tr><td>ihr</td><td>euch</td><td>euch</td></tr><tr><td>sie / Sie</td><td>sie / Sie</td><td>ihnen / Ihnen</td></tr></tbody></table></div>
+<p class="small muted">3격을 쓰는 동사: helfen, gefallen, fehlen (Er gefällt ihr. Sie fehlen mir. Hana hilft ihm.) · 4격: lieben, treffen, besuchen, suchen (Ich liebe dich.)</p></div>
+<div class="card"><b>위치·방향 전치사 (3·4격 지배)</b><p class="small muted" style="margin-top:2px">an, auf, hinter, in, neben, über, unter, vor, zwischen</p>
+<div class="scroll"><table class="tbl"><thead><tr><th>질문</th><th>격</th><th>동사</th><th>예문</th></tr></thead><tbody>
+<tr><td><b>Wo?</b> 어디에</td><td>3격</td><td>stehen, liegen, hängen(자), sitzen, sein</td><td>Das Bild hängt an <b>der</b> Wand.<br>Neben <b>dem</b> Bett steht ein Tisch.</td></tr>
+<tr><td><b>Wohin?</b> 어디로</td><td>4격</td><td>stellen, legen, hängen(타), gehen, ziehen</td><td>Ich stelle die Flasche auf <b>den</b> Tisch.<br>Ich möchte ein Regal an <b>die</b> Wand stellen.</td></tr></tbody></table></div>
+<p class="small muted">축약: in dem = <b>im</b>, in das = <b>ins</b>, an dem = <b>am</b>, an das = <b>ans</b>, auf das = <b>aufs</b>, bei dem = <b>beim</b>, von dem = <b>vom</b>.</p></div>
+<div class="card"><b>동사 인칭변화</b><div class="scroll"><table class="tbl"><thead><tr><th></th><th>kommen</th><th>arbeiten</th><th>heißen</th><th>sein</th><th>haben</th><th>nehmen</th><th>fahren</th></tr></thead><tbody>
+<tr><td>ich</td><td>komme</td><td>arbeite</td><td>heiße</td><td>bin</td><td>habe</td><td>nehme</td><td>fahre</td></tr>
+<tr><td>du</td><td>kommst</td><td>arbeit<b>e</b>st</td><td>heißt</td><td>bist</td><td>hast</td><td><b>nimm</b>st</td><td>f<b>ä</b>hrst</td></tr>
+<tr><td>er/sie/es</td><td>kommt</td><td>arbeit<b>e</b>t</td><td>heißt</td><td>ist</td><td>hat</td><td><b>nimm</b>t</td><td>f<b>ä</b>hrt</td></tr>
+<tr><td>wir</td><td>kommen</td><td>arbeiten</td><td>heißen</td><td>sind</td><td>haben</td><td>nehmen</td><td>fahren</td></tr>
+<tr><td>ihr</td><td>kommt</td><td>arbeit<b>e</b>t</td><td>heißt</td><td>seid</td><td>habt</td><td>nehmt</td><td>fahrt</td></tr>
+<tr><td>sie/Sie</td><td>kommen</td><td>arbeiten</td><td>heißen</td><td>sind</td><td>haben</td><td>nehmen</td><td>fahren</td></tr></tbody></table></div>
+<p class="small muted">어간 모음이 바뀌는 동사(du·er에서만): e→i nehmen, helfen, treffen, essen, geben · e→ie sehen, lesen · a→ä fahren, tragen, fallen, gefallen.</p></div>
+<div class="card"><b>부정 · 어순 · 의문사</b><ul style="margin:6px 0;padding-left:20px">
+<li><b>kein</b>: 명사 앞 부정 (Ich habe <b>keinen</b> Bruder.) / <b>nicht</b>: 동사·형용사·장소 부정 (Ich wohne <b>nicht</b> in Köln.)</li>
+<li>평서문: 동사는 항상 <b>둘째 자리</b>. Heute <b>habe</b> ich Zeit. / Später <b>machen</b> wir einen Spaziergang.</li>
+<li>조동사 문장: 본동사 원형은 문장 <b>끝</b>. Ich möchte ein Regal an die Wand <b>stellen</b>.</li>
+<li>의문사: Wer(누가) · Was(무엇) · Wo(어디에) · Woher(어디서) · Wohin(어디로) · Wie(어떻게) · Wie alt · Wie oft</li>
+<li>zwar A, aber B: Sie ist <b>zwar</b> alt, <b>aber</b> sehr gesund.</li></ul></div>
+<div class="card"><b>숫자</b><p class="small" style="margin:4px 0">1 eins · 2 zwei · 3 drei · 4 vier · 5 fünf · 6 sechs · 7 sieben · 8 acht · 9 neun · 10 zehn · 11 elf · 12 zwölf · 13 dreizehn · 16 sechzehn · 17 siebzehn · 20 zwanzig · 30 dreißig · 40 vierzig</p>
+<p class="small muted" style="margin:0">21 이상은 <b>1의 자리 + und + 10의 자리</b>: 21 einundzwanzig, 43 dreiundvierzig, 26 sechsundzwanzig.</p></div>`}
+
+/* ===== 작문 ===== */
+let W={sub:'tr',src:'all',Q:null,qa:null,task:0,taskRes:null,showSample:false};
+const SRCS=[['all','전체'],['u','Übung 문장'],['d','대화문 전체'],['d2','2과'],['d3','3과'],['d4','4과'],['d5','5과']];
+function wPool(){const s=W.src;return BANK.filter(b=>s==='all'||(s==='u'&&b.src==='u')||(s==='d'&&b.src==='d')||(s[0]==='d'&&s.length===2&&b.did===+s[1]))}
+function vWrite(){
+ const head=`<h2>작문 연습</h2><div class="seg" style="margin-bottom:10px">${[['tr','번역 쓰기'],['qa','질문에 답하기'],['free','자유 작문']].map(s=>`<button class="${W.sub===s[0]?'on':''}" data-a="wsub" data-v="${s[0]}">${s[1]}</button>`).join('')}</div>`;
+ return head+(W.sub==='tr'?wTrans():W.sub==='qa'?wQA():wFree())}
+ACT.wsub=el=>{W.sub=el.dataset.v;W.Q=null;if(W.sub==='qa'&&!W.qa)W.qa={order:shuf(QA.map((_,i)=>i)),i:0,res:null,val:''};render()};
+function wTrans(){const Q=W.Q;
+ if(!Q)return`<div class="card"><b>출처</b><div class="row" style="margin:8px 0">${SRCS.map(s=>`<button class="chip ${W.src===s[0]?'on':''}" data-a="wsrc" data-v="${s[0]}">${s[1]}</button>`).join('')}</div>
+ <p class="small muted">한국어 문장을 독일어로 쓰세요. 단어 타일을 눌러 조립하거나 직접 입력할 수 있어요. 틀린 부분은 색으로 표시됩니다.</p><button class="pri" data-a="wstart">10문장 시작 (${wPool().length}문장 중)</button></div>`;
+ if(Q.done)return`<div class="card"><h3 style="margin-top:0">결과</h3><div class="word" style="margin:4px 0">${Q.ok} <span class="muted" style="font-size:.5em">/ ${Q.items.length}</span></div>
+ ${Q.wrong.length?`<h3>다시 볼 문장</h3>${Q.wrong.map(w=>`<div style="margin:8px 0"><div class="muted small">${esc(w.ko)}</div><div class="noun">${esc(w.de.split('~')[0])}</div></div>`).join('')}`:''}
+ <div class="row" style="margin-top:12px"><button class="pri" data-a="wstart">다시 하기</button><button data-a="wback">출처 선택으로</button></div></div>`;
+ const it=Q.items[Q.i],r=Q.res;
+ const last=it.de.split('~')[0].trim().slice(-1),pun=/[.?!]/.test(last)?last:'';
+ let body;
+ if(Q.mode==='tile'){
+  body=`<div class="ans" id="ans">${Q.chosen.map((ci,p)=>`<span class="tile" data-a="wun" data-v="${p}">${esc(Q.pool[ci])}</span>`).join('')}${pun?`<span class="muted" style="padding:0 6px">${pun}</span>`:''}</div>
+  <div>${Q.pool.map((w,i)=>`<span class="tile ${Q.chosen.includes(i)||r?'used':''}" data-a="wtile" data-v="${i}">${esc(w)}</span>`).join('')}</div>`}
+ else body=`<input type="text" id="win" data-enter="${r?'wnext':'wcheck'}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="독일어로 쓰기" ${r?'disabled':''}>${r?'':specBar()}`;
+ const fb=r?(r.r==='bad'?`<div class="fb bad"><b class="t">오답</b><div>내 답: ${r.ud||'<span class="muted">(비움)</span>'}</div><div>정답: <b>${r.ad}</b></div></div>`
+  :`<div class="fb ${r.r==='ok'?'ok':'near'}"><b>${r.r==='ok'?'정답!':'거의 맞아요'}</b> ${esc(r.best)}${r.note?`<div class="tip">${r.note}</div>`:''}</div>`):'';
+ return`<div class="spread small"><span>${Q.i+1} / ${Q.items.length}</span><span class="pill">${it.src==='d'?it.did+'과 대화':'Übung'}</span></div><div class="bar"><i style="width:${Q.i/Q.items.length*100}%"></i></div>
+ <div class="card"><div class="q" style="font-family:var(--f-body)">${esc(it.ko)}</div>${body}
+ <div class="row" style="margin-top:10px">${r?`<button class="pri" data-a="wnext">다음</button>`:`<button class="pri" data-a="wcheck">확인</button><button data-a="wclear">지우기</button><button class="ghost" data-a="whint">힌트</button><button class="ghost" data-a="wmode">${Q.mode==='tile'?'직접 입력으로':'타일로'}</button>`}</div>${Q.hint&&!r?`<div class="fb near small">${esc(Q.hint)}</div>`:''}${fb}</div>`}
+ACT.wsrc=el=>{W.src=el.dataset.v;render()};ACT.wback=()=>{W.Q=null;render()};
+ACT.wstart=()=>{const items=pick(wPool(),10);W.Q={items,i:0,ok:0,wrong:[],done:false,mode:'tile',res:null,hint:''};wload();render()};
+function wload(){const Q=W.Q,it=Q.items[Q.i];Q.res=null;Q.hint='';Q.chosen=[];Q.pool=shuf(norm(it.de.split('~')[0]).split(' '))}
+ACT.wtile=el=>{const Q=W.Q;if(Q.res)return;Q.chosen.push(+el.dataset.v);render()};
+ACT.wun=el=>{const Q=W.Q;if(Q.res)return;Q.chosen.splice(+el.dataset.v,1);render()};
+ACT.wclear=()=>{const Q=W.Q;Q.chosen=[];Q.hint='';render();const i=$('#win');if(i)i.value=''};
+ACT.whint=()=>{const Q=W.Q,w=norm(Q.items[Q.i].de.split('~')[0]).split(' ');Q.hint=`첫 단어: ${w[0]} · 총 ${w.length}단어`;const v=$('#win')?.value;render();if(v!=null&&$('#win'))$('#win').value=v};
+ACT.wmode=()=>{const Q=W.Q;Q.mode=Q.mode==='tile'?'type':'tile';Q.chosen=[];render();const i=$('#win');if(i)i.focus()};
+ACT.wcheck=()=>{const Q=W.Q,it=Q.items[Q.i];if(Q.res)return;
+ const val=Q.mode==='tile'?Q.chosen.map(i=>Q.pool[i]).join(' '):$('#win').value;
+ const r=grade(val,it.de.split('~'));Q.res=r;rec(it.id,r.r!=='bad');if(r.r!=='bad')Q.ok++;else Q.wrong.push(it);
+ render();const i=$('#win');if(i){i.value=val;i.disabled=true}};
+ACT.wnext=()=>{const Q=W.Q;Q.i++;if(Q.i>=Q.items.length){Q.done=true}else wload();render();const i=$('#win');if(i)i.focus()};
+function wQA(){const A=W.qa||(W.qa={order:shuf(QA.map((_,i)=>i)),i:0,res:null,val:''});const it=QA[A.order[A.i%QA.length]],r=A.res;
+ return`<div class="card"><div class="spread small"><span>문제 ${A.i+1}</span><span class="muted">질문을 읽고 완전한 문장으로 답하세요</span></div>
+ <div class="q" style="margin-top:8px">${esc(it.q)}</div><div class="muted small" style="margin-bottom:8px">상황: ${esc(it.hint)}</div>
+ <input type="text" id="win" data-enter="${r?'qanext':'qacheck'}" autocomplete="off" autocapitalize="off" spellcheck="false" ${r?'disabled':''}>${r?'':specBar()}
+ <div class="row" style="margin-top:10px">${r?'<button class="pri" data-a="qanext">다음 문제</button>':'<button class="pri" data-a="qacheck">확인</button>'}</div>
+ ${r?`<div class="fb ${r.pass?'ok':'bad'}"><b class="${r.pass?'':'t'}">${r.pass?'좋아요!':'아쉬워요'}</b><ul class="chk">${r.list.map(c=>`<li class="${c[1]?'y':'n'}">${c[1]?'✓':'✗'} ${esc(c[0])}</li>`).join('')}</ul><div class="tip">모범답안: <b>${esc(it.sample)}</b></div></div>`:''}</div>`}
+ACT.qacheck=()=>{const A=W.qa,it=QA[A.order[A.i%QA.length]],v=$('#win').value;const t=' '+norm(v).toLowerCase()+' ';
+ const list=it.checks.map(c=>[c[0],c[1].test(t.trim())]);A.res={list,pass:list.every(c=>c[1])};A.val=v;rec('qa:'+A.order[A.i%QA.length],A.res.pass);render();const i=$('#win');i.value=v;i.disabled=true};
+ACT.qanext=()=>{W.qa.i++;W.qa.res=null;render();const i=$('#win');if(i)i.focus()};
+function wFree(){const T=TASKS[W.task],r=W.taskRes;
+ return`<div class="card"><div class="row" style="margin-bottom:8px">${TASKS.map((t,i)=>`<button class="chip ${W.task===i?'on':''}" data-a="wtask" data-v="${i}">${t.title}</button>`).join('')}</div>
+ <p><b>${esc(T.prompt)}</b></p><p class="small muted">쓸 만한 표현: ${esc(T.bank)}</p>
+ <textarea id="free" placeholder="여기에 독일어로 써 보세요" autocapitalize="off" spellcheck="false"></textarea>${specBar()}
+ <div class="row"><button class="pri" data-a="wfcheck">체크리스트로 검사</button><button class="ghost" data-a="wsample">모범 예시 ${W.showSample?'숨기기':'보기'}</button></div>
+ ${r?`<div class="fb ${r.pass?'ok':'near'}"><b>${r.pass?'필수 표현을 모두 썼어요':'빠진 표현이 있어요'}</b> <span class="muted small">(${r.n}문장 · ${r.w}단어${r.n<T.min?` · 최소 ${T.min}문장 권장`:''})</span><ul class="chk">${r.list.map(c=>`<li class="${c[1]?'y':'n'}">${c[1]?'✓':'✗'} ${esc(c[0])}</li>`).join('')}</ul>
+ <div class="tip small muted">자동 검사는 표현의 유무만 확인해요. 동사 위치(둘째 자리), 명사 대문자, 관사의 격은 모범 예시와 직접 비교해 보세요.</div></div>`:''}
+ ${W.showSample?`<div class="fb near"><b>모범 예시</b><div class="tip">${esc(T.sample)}</div></div>`:''}</div>`}
+ACT.wtask=el=>{W.task=+el.dataset.v;W.taskRes=null;W.showSample=false;render()};
+ACT.wsample=()=>{const v=$('#free').value;W.showSample=!W.showSample;render();$('#free').value=v};
+ACT.wfcheck=()=>{const T=TASKS[W.task],v=$('#free').value,t=norm(v).toLowerCase();
+ const list=T.checks.map(c=>[c[0],c[1].test(t)]);
+ W.taskRes={list,pass:list.every(c=>c[1]),n:(v.match(/[.!?]/g)||[]).length,w:t?t.split(' ').length:0};render();$('#free').value=v};
+
+/* ===== 대화문 ===== */
+let D={id:2,mode:'read',ko:true,blanks:null,res:null};
+const strip=w=>w.replace(/[.,!?;:"“”„]/g,'');
+function vDialog(){
+ const d=DIALOGS.find(x=>x.id===D.id);
+ const head=`<h2>대화문</h2><div class="row" style="margin-bottom:8px"><div class="seg">${DIALOGS.map(x=>`<button class="${D.id===x.id?'on':''}" data-a="did" data-v="${x.id}">${x.id}과</button>`).join('')}</div>
+ <div class="seg">${[['read','읽기'],['cloze','빈칸 채우기']].map(m=>`<button class="${D.mode===m[0]?'on':''}" data-a="dmode" data-v="${m[0]}">${m[1]}</button>`).join('')}</div></div>
+ <p class="muted small">${esc(d.title)} · ${esc(d.topic)}</p>`;
+ if(D.mode==='read')return head+`<div class="row" style="margin-bottom:6px"><label class="small"><input type="checkbox" id="dko" data-a="dko" ${D.ko?'checked':''}> 한국어 번역 보기</label><button class="ghost chip" data-a="dwrite">이 대화 따라 쓰기</button></div>
+  <div class="card" style="padding-top:6px;padding-bottom:6px">${d.lines.map(l=>`<div class="dl"><div class="sp">${l[0]||'·'}</div><div class="de">${esc(l[1])} ${spk(l[1])}</div>${D.ko?`<div class="ko">${esc(l[2])}</div>`:''}</div>`).join('')}</div>`;
+ if(!D.blanks)genBlanks(d);
+ const res=D.res;
+ return head+`<p class="small muted">빈칸에 들어갈 단어를 쓰세요. 대소문자와 ä ö ü는 정확히 써야 만점이에요.</p>${specBar()}
+ <div class="card" style="padding-top:6px;padding-bottom:6px">${d.lines.map((l,li)=>{const toks=l[1].split(' ');
+  return`<div class="dl"><div class="sp">${l[0]||'·'}</div><div class="de">${toks.map((t,ti)=>{const k=li+'-'+ti;
+   if(!D.blanks.has(k))return esc(t);const w=strip(t),p=t.slice(w.length);
+   if(res){const ok=res[k];return ok?`<mark class="m">${esc(w)}</mark>${esc(p)}`:`<mark class="x">${esc(res.v[k]||'___')}</mark> <mark class="m">${esc(w)}</mark>${esc(p)}`}
+   return`<input class="blank" type="text" data-k="${k}" size="${Math.max(4,w.length)}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="빈칸">${esc(p)}`}).join(' ')}</div><div class="ko">${esc(l[2])}</div></div>`}).join('')}</div>
+ <div class="row">${res?`<div class="fb ${res.score===D.blanks.size?'ok':'near'}" style="margin:0"><b>${res.score} / ${D.blanks.size}</b> 맞혔어요</div>`:`<button class="pri" data-a="dcheck">채점</button>`}<button data-a="dnew">새 빈칸으로</button></div>`}
+function genBlanks(d){const s=new Set();d.lines.forEach((l,li)=>l[1].split(' ').forEach((t,ti)=>{const w=strip(t);if(w.length>=4&&Math.random()<.4)s.add(li+'-'+ti)}));
+ if(s.size<3)d.lines.forEach((l,li)=>l[1].split(' ').forEach((t,ti)=>{if(strip(t).length>=5&&s.size<6)s.add(li+'-'+ti)}));D.blanks=s;D.res=null}
+ACT.did=el=>{D.id=+el.dataset.v;D.blanks=null;D.res=null;render()};
+ACT.dmode=el=>{D.mode=el.dataset.v;D.blanks=null;D.res=null;render()};
+ACT.dko=el=>{D.ko=el.checked;render()};
+ACT.dnew=()=>{D.blanks=null;render()};
+ACT.dcheck=()=>{const d=DIALOGS.find(x=>x.id===D.id),res={v:{},score:0};
+ document.querySelectorAll('input.blank').forEach(i=>{const k=i.dataset.k,[li,ti]=k.split('-').map(Number),ans=strip(d.lines[li][1].split(' ')[ti]);
+  const g=grade(i.value,[ans]);const ok=g.r!=='bad'&&norm(i.value)===ans;res[k]=ok;res.v[k]=i.value;if(ok)res.score++;rec('dc:'+D.id+':'+k,ok)});D.res=res;render()};
+ACT.dwrite=()=>{go('write');W.sub='tr';W.src='d'+D.id;ACT.wstart()};
+
+/* ===== 모의고사 ===== */
+let M=null;
+function vMock(){
+ if(!M)return`<h2>모의고사</h2><div class="card"><p>성별 8문항 + 문법 8문항 + 번역 4문항 = <b>20점</b>, 그리고 작문 1문항(체크리스트)으로 구성됩니다. 시간 제한은 없지만 20분 안에 끝내는 걸 목표로 해 보세요.</p><button class="pri" data-a="mstart">시작</button></div>`;
+ const R=M.res;
+ const gen=M.gen.map((n,i)=>`<div style="margin:12px 0"><div class="row"><span class="noun" style="font-size:20px;min-width:7em">${esc(n.de)}</span><span class="muted small">${esc(n.ko)}</span></div>
+  <div class="row" style="margin-top:4px">${['der','die','das'].map(a=>`<button class="chip ${R?(a===n.art?'on':''):(M.sel['g'+i]===a?'on':'')}" ${R?'disabled':''} data-a="msel" data-k="g${i}" data-v="${a}" style="min-width:64px">${a}</button>`).join('')}
+  ${R?`<span class="${R.g[i]?'das':'die'}"><b>${R.g[i]?'✓':'✗ '+esc(M.sel['g'+i]||'무응답')}</b></span>`:''}</div>${R&&!R.g[i]?`<div class="small muted">${esc(tipFor(n))}</div>`:''}</div>`).join('');
+ const gr=M.gr.map((q,i)=>`<div style="margin:12px 0"><div class="q" style="font-size:17px">${i+1}. ${esc(q.text).replace('___','<u>&nbsp;</u>')}</div>
+  ${q.opts.map((o,j)=>`<button class="opt ${R?(o===q.ans?'right':(M.sel['r'+i]===j?'wrong':'')):(M.sel['r'+i]===j?'on':'')}" style="margin:4px 0;padding:8px 12px" ${R?'disabled':''} data-a="msel" data-k="r${i}" data-v="${j}">${esc(o)}</button>`).join('')}
+  ${R&&!R.r[i]?`<div class="small muted">${esc(q.why)}</div>`:''}</div>`).join('');
+ const tr=M.tr.map((t,i)=>`<div style="margin:12px 0"><div>${i+1}. ${esc(t.ko)}</div>
+  <input type="text" id="mt${i}" autocomplete="off" autocapitalize="off" spellcheck="false" ${R?'disabled':''} value="${esc(R?R.tv[i]:'')}">
+  ${R?(R.t[i].r==='bad'?`<div class="fb bad small"><div>정답: <b>${R.t[i].ad}</b></div></div>`:`<div class="fb ${R.t[i].r==='ok'?'ok':'near'} small">${R.t[i].r==='ok'?'정답':'거의 정답: '+esc(R.t[i].best)}</div>`):''}</div>`).join('');
+ const T=M.task;
+ return`<h2>모의고사</h2>
+ ${R?`<div class="card"><div class="word" style="margin:0">${R.score}<span class="muted" style="font-size:.5em"> / 20</span></div><div class="wko">성별 ${R.g.filter(Boolean).length}/8 · 문법 ${R.r.filter(Boolean).length}/8 · 번역 ${R.t.filter(x=>x.r!=='bad').length}/4 · 작문 ${R.free.list.filter(c=>c[1]).length}/${T.checks.length}</div><div class="row" style="justify-content:center"><button class="pri" data-a="mstart">새 시험</button></div></div>`:''}
+ <h3>Ⅰ. 성별 (8점)</h3><div class="card">${gen}</div>
+ <h3>Ⅱ. 문법 (8점)</h3><div class="card">${gr}</div>
+ <h3>Ⅲ. 번역 (4점)</h3><div class="card">${tr}</div>
+ <h3>Ⅳ. 작문 (체크리스트)</h3><div class="card"><p><b>${esc(T.prompt)}</b></p><p class="small muted">${esc(T.bank)}</p>
+ <textarea id="mfree" ${R?'disabled':''}>${R?esc(R.fv):''}</textarea>${R?'':specBar()}
+ ${R?`<ul class="chk">${R.free.list.map(c=>`<li class="${c[1]?'y':'n'}">${c[1]?'✓':'✗'} ${esc(c[0])}</li>`).join('')}</ul><div class="fb near small"><b>모범 예시</b><div class="tip">${esc(T.sample)}</div></div>`:''}</div>
+ ${R?'':`<button class="pri" data-a="msub" style="width:100%;min-height:48px">채점하기</button>`}`}
+ACT.mstart=()=>{const bad=shuf(GRAM.filter(g=>!g.typed));const gr=[];const seen={};
+ bad.forEach(g=>{if(gr.length<8&&(seen[g.cat]||0)<2){gr.push(g);seen[g.cat]=(seen[g.cat]||0)+1}});
+ M={gen:pick(NOUNS.filter(n=>n.g!=='p'),8),gr:gr.map(g=>({...g,opts:shuf([g.ans,...g.wr])})),tr:shuf(BANK.filter(b=>b.src==='u')).slice(0,4),task:TASKS[Math.random()*TASKS.length|0],sel:{},res:null};render();window.scrollTo(0,0)};
+ACT.msel=el=>{if(M.res)return;const k=el.dataset.k;M.sel[k]=k[0]==='g'?el.dataset.v:+el.dataset.v;
+ const v=[...document.querySelectorAll('input[id^=mt],#mfree')].map(i=>[i.id,i.value]);const y=window.scrollY;render();v.forEach(([id,val])=>{const i=document.getElementById(id);if(i)i.value=val});window.scrollTo(0,y)};
+ACT.msub=()=>{const res={g:[],r:[],t:[],tv:[]};
+ M.gen.forEach((n,i)=>{const ok=M.sel['g'+i]===n.art;res.g.push(ok);rec(n.id,ok)});
+ M.gr.forEach((q,i)=>{const ok=q.opts[M.sel['r'+i]]===q.ans;res.r.push(ok);if(ok)delete S.gw[q.id];else S.gw[q.id]=1;rec(q.id,ok)});
+ M.tr.forEach((t,i)=>{const v=$('#mt'+i).value;res.tv.push(v);const g=grade(v,t.de.split('~'));res.t.push(g);rec(t.id,g.r!=='bad')});
+ const fv=$('#mfree').value;res.fv=fv;const t=norm(fv).toLowerCase();res.free={list:M.task.checks.map(c=>[c[0],c[1].test(t)])};
+ res.score=res.g.filter(Boolean).length+res.r.filter(Boolean).length+res.t.filter(x=>x.r!=='bad').length;
+ S.mock.push({d:dkey(),s:res.score});S.mock=S.mock.slice(-20);save();M.res=res;render();window.scrollTo(0,0)};
+
+/* ===== shell ===== */
+const TABS=[['home','홈'],['genus','성별'],['vocab','단어'],['grammar','문법'],['write','작문'],['dialog','대화문'],['mock','모의고사']];
+const VIEWS={home:vHome,genus:vGenus,vocab:vVocab,grammar:vGrammar,write:vWrite,dialog:vDialog,mock:vMock};
+function go(t){clearTimers();tab=t;render();window.scrollTo(0,0)}
+function render(){$('#tabs').innerHTML=TABS.map(t=>`<button data-a="go" data-v="${t[0]}" ${t[0]===tab?'aria-current="true"':''}>${t[1]}</button>`).join('');
+ $('#app').innerHTML=VIEWS[tab]()}
+document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!el||el.tagName==='INPUT'&&el.type!=='checkbox')return;
+ if(el.tagName==='INPUT')return;const f=ACT[el.dataset.a];if(f)f(el,e)});
+document.addEventListener('change',e=>{const el=e.target;if(el.matches('input[type=checkbox][data-a]')&&ACT[el.dataset.a])ACT[el.dataset.a](el)});
+document.addEventListener('input',e=>{if(e.target.id==='vq'){V.q=e.target.value;$('#vl').innerHTML=listRows()}});
+let lastInp=null;
+document.addEventListener('focusin',e=>{if(e.target.matches('input[type=text],textarea'))lastInp=e.target});
+document.addEventListener('mousedown',e=>{if(e.target.closest('.spec'))e.preventDefault()});
+ACT.ins=el=>{const i=lastInp&&document.body.contains(lastInp)&&!lastInp.disabled?lastInp:$('#pin,#tin,#gin,#win,#free,#mfree')||document.querySelector('input.blank');if(!i)return;
+ const s=i.selectionStart??i.value.length,t=i.selectionEnd??s;i.value=i.value.slice(0,s)+el.dataset.v+i.value.slice(t);i.focus();i.setSelectionRange(s+1,s+1)};
+document.addEventListener('keydown',e=>{const t=e.target;
+ if(t.matches('input,textarea,select')){if(e.key==='Enter'&&t.dataset.enter&&ACT[t.dataset.enter]){e.preventDefault();ACT[t.dataset.enter]()}return}
+ if(e.ctrlKey||e.metaKey||e.altKey)return;
+ const Q=GS.Q;
+ if(tab==='genus'&&Q&&!Q.done&&Q.mode!=='plural'&&GS.mode!=='rules'){const k=e.key.toLowerCase(),m={1:'der',2:'die',3:'das',m:'der',f:'die',n:'das'};
+  if(m[k]&&Q.ans==null){answerG(m[k]);e.preventDefault()}else if((e.key==='Enter'||e.key===' ')&&Q.ans!=null){ACT.gnext();e.preventDefault()}}
+ else if(tab==='grammar'&&GM.Q&&!GM.Q.done&&GM.Q.ans&&e.key==='Enter'){ACT.qnext()}
+ else if(tab==='write'&&W.sub==='tr'&&W.Q&&W.Q.res&&e.key==='Enter'){ACT.wnext()}
+ else if(tab==='vocab'&&V.sub==='card'&&V.Q&&!V.Q.done&&(e.key===' '||e.key==='Enter')&&!V.Q.flip){ACT.flip();e.preventDefault()}});
+render();
+</script>
+
+</body></html>
